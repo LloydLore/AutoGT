@@ -1,0 +1,397 @@
+openapi: 3.0.3
+info:
+  title: AutoGT TARA Platform API
+  description: CLI and API interfaces for automotive threat analysis and risk assessment
+  version: 1.0.0
+  contact:
+    name: AutoGT Team
+    
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /analysis:
+    post:
+      summary: Create new TARA analysis
+      description: Initialize a new threat analysis and risk assessment workflow
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Input file (Excel, CSV, JSON, or text)
+                analysis_name:
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                  description: Unique analysis identifier
+                vehicle_model:
+                  type: string
+                  description: Target vehicle information
+              required:
+                - file
+                - analysis_name
+      responses:
+        '201':
+          description: Analysis created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: File too large (>10MB limit)
+          
+  /analysis/{analysis_id}:
+    get:
+      summary: Get analysis status and results
+      parameters:
+        - name: analysis_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Analysis details retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisDetails'
+        '404':
+          description: Analysis not found
+          
+    put:
+      summary: Update analysis step data
+      parameters:
+        - name: analysis_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepUpdate'
+      responses:
+        '200':
+          description: Analysis updated successfully
+        '404':
+          description: Analysis not found
+        '422':
+          description: Invalid step data
+
+  /analysis/{analysis_id}/assets:
+    post:
+      summary: Define assets for TARA analysis
+      parameters:
+        - name: analysis_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AssetDefinition'
+      responses:
+        '201':
+          description: Assets created successfully
+        '400':
+          description: Invalid asset data
+
+  /analysis/{analysis_id}/threats:
+    post:
+      summary: Identify threat scenarios for assets
+      parameters:
+        - name: analysis_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ThreatScenario'
+      responses:
+        '201':
+          description: Threat scenarios created
+        '400':
+          description: Invalid threat data
+
+  /analysis/{analysis_id}/export:
+    get:
+      summary: Export analysis results
+      parameters:
+        - name: analysis_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [json, excel]
+            default: json
+      responses:
+        '200':
+          description: Export successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisExport'
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+components:
+  schemas:
+    AnalysisResponse:
+      type: object
+      properties:
+        analysis_id:
+          type: string
+          format: uuid
+        analysis_name:
+          type: string
+        status:
+          type: string
+          enum: [in_progress, completed, validated]
+        current_step:
+          type: integer
+          minimum: 1
+          maximum: 8
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - analysis_id
+        - analysis_name
+        - status
+        - current_step
+        
+    AnalysisDetails:
+      allOf:
+        - $ref: '#/components/schemas/AnalysisResponse'
+        - type: object
+          properties:
+            vehicle_model:
+              type: string
+            assets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Asset'
+            threat_scenarios:
+              type: array
+              items:
+                $ref: '#/components/schemas/ThreatScenario'
+            risk_values:
+              type: array
+              items:
+                $ref: '#/components/schemas/RiskValue'
+
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        asset_type:
+          type: string
+          enum: [HARDWARE, SOFTWARE, COMMUNICATION, DATA]
+        criticality_level:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, VERY_HIGH]
+        interfaces:
+          type: array
+          items:
+            type: string
+        security_properties:
+          type: object
+          properties:
+            confidentiality:
+              type: string
+              enum: [LOW, MEDIUM, HIGH]
+            integrity:
+              type: string
+              enum: [LOW, MEDIUM, HIGH]
+            availability:
+              type: string
+              enum: [LOW, MEDIUM, HIGH]
+      required:
+        - name
+        - asset_type
+        - criticality_level
+
+    AssetDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        asset_type:
+          type: string
+          enum: [HARDWARE, SOFTWARE, COMMUNICATION, DATA]
+        criticality_level:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, VERY_HIGH]
+        interfaces:
+          type: array
+          items:
+            type: string
+        data_flows:
+          type: array
+          items:
+            type: string
+        security_properties:
+          $ref: '#/components/schemas/SecurityProperties'
+      required:
+        - name
+        - asset_type
+        - criticality_level
+
+    ThreatScenario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        asset_id:
+          type: string
+          format: uuid
+        threat_name:
+          type: string
+        threat_actor:
+          type: string
+          enum: [SCRIPT_KIDDIE, CRIMINAL, NATION_STATE, INSIDER]
+        motivation:
+          type: string
+        attack_vectors:
+          type: array
+          items:
+            type: string
+        prerequisites:
+          type: array
+          items:
+            type: string
+      required:
+        - asset_id
+        - threat_name
+        - threat_actor
+
+    RiskValue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        asset_id:
+          type: string
+          format: uuid
+        threat_scenario_id:
+          type: string
+          format: uuid
+        risk_level:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, VERY_HIGH]
+        risk_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+        calculation_method:
+          type: string
+      required:
+        - asset_id
+        - threat_scenario_id
+        - risk_level
+        - risk_score
+
+    SecurityProperties:
+      type: object
+      properties:
+        confidentiality:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+        integrity:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+        availability:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+
+    StepUpdate:
+      type: object
+      properties:
+        step:
+          type: integer
+          minimum: 1
+          maximum: 8
+        data:
+          type: object
+          description: Step-specific data payload
+      required:
+        - step
+        - data
+
+    AnalysisExport:
+      type: object
+      properties:
+        analysis_id:
+          type: string
+          format: uuid
+        export_format:
+          type: string
+          enum: [json, excel]
+        file_url:
+          type: string
+          format: uri
+        generated_at:
+          type: string
+          format: date-time
+      required:
+        - analysis_id
+        - export_format
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+      required:
+        - error
+        - message
