@@ -1,0 +1,9 @@
+{
+  "ai_generated": false,
+  "fallback_reason": "Gemini AI unavailable",
+  "basic_recommendations": [
+    "Implement defense in depth security architecture",
+    "Establish continuous security monitoring",
+    "Deploy regular security assessments"
+  ]
+}

@@ -45,6 +45,14 @@
 - Q: What are the expected performance targets for TARA analysis processing? → A: Single asset <10s, Full model <5min, Batch >100/min
 - Q: What user authentication method should the TARA platform support? → A: No authentication (open access system)
 
+### Session 2025-09-30
+
+- Q: How should AI enhance the TARA analysis process? → A: AI provides full automated analysis with human validation checkpoints
+- Q: When AI analysis fails or produces low-confidence results, how should the system handle fallback scenarios? → A: Retry with different AI parameters then fallback to manual mode
+- Q: What confidence threshold should trigger human validation checkpoints for AI-generated analysis results? → A: 75% - Balanced approach with moderate human oversight
+- Q: How should the system handle API cost management and rate limiting for AutoGen/Gemini AI services? → A: Unlimited usage with cost monitoring and alerts only
+- Q: What data should be stored vs. dynamically generated when integrating AI analysis results into the existing TARA workflow? → A: Store only validated results, regenerate draft analysis on demand
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### Primary User Story
@@ -72,8 +80,8 @@ As a cybersecurity analyst working on automotive systems, I need to perform comp
 
 - **FR-001**: System MUST support input file formats including Excel (.xlsx, .xls), CSV, JSON, and plain text
 - **FR-002**: System MUST validate input data structure and provide clear error messages for invalid formats
-- **FR-003**: System MUST implement all 8 TARA process steps: asset definition, impact rating, threat scenario identification, attack path analysis, attack feasibility rating, risk value determination, risk treatment decision, and cybersecurity goal setting
-- **FR-004**: System MUST allow users to progress through TARA steps sequentially with ability to modify previous steps
+- **FR-003**: System MUST implement all 8 TARA process steps with AI-powered automated analysis: asset definition, impact rating, threat scenario identification, attack path analysis, attack feasibility rating, risk value determination, risk treatment decision, and cybersecurity goal setting
+- **FR-004**: System MUST allow users to progress through TARA steps sequentially with human validation checkpoints for AI-generated results and ability to modify previous steps
 - **FR-005**: System MUST generate structured JSON output containing complete TARA analysis results
 - **FR-006**: System MUST generate formatted Excel spreadsheet output based on JSON analysis results
 - **FR-007**: System MUST persist analysis progress to allow resumption of incomplete assessments
@@ -86,19 +94,22 @@ As a cybersecurity analyst working on automotive systems, I need to perform comp
 - **FR-014**: System MUST validate file uploads for security threats with 10MB size limit and malware scanning
 - **FR-015**: System MUST meet performance targets: single asset analysis <10 seconds, full vehicle model <5 minutes, batch processing >100 assets/minute
 - **FR-016**: System MUST provide open access with no user authentication required
-- **FR-016**: System MUST provide open access with no user authentication required
+- **FR-017**: System MUST implement AI failure recovery by retrying with different parameters before falling back to manual analysis mode with clear failure notifications
+- **FR-018**: System MUST require human validation for AI-generated results with confidence below 75% threshold, displaying confidence scores to users
+- **FR-019**: System MUST provide unlimited AI API usage with cost monitoring, logging, and configurable alert thresholds for budget management
+- **FR-020**: System MUST store only human-validated AI analysis results permanently, while regenerating draft AI analysis on demand to reduce storage costs
 
 ### Key Entities *(include if feature involves data)*
 
-- **Asset**: Represents vehicle system components with attributes like criticality level, interfaces, data flows, and security properties
-- **Impact Rating**: Quantified assessment of potential damage levels (safety, financial, operational, privacy) if asset is compromised
-- **Threat Scenario**: Specific cybersecurity threat patterns applicable to assets, including threat actors, motivations, and attack vectors
-- **Attack Path**: Detailed sequence of steps an attacker might take to compromise assets, including prerequisites and intermediate targets
-- **Attack Feasibility**: Assessment of likelihood and difficulty for successful attack execution, considering technical barriers and attacker capabilities
-- **Risk Value**: Calculated combination of impact rating and attack feasibility, typically expressed as risk level (low, medium, high, very high)
-- **Risk Treatment**: Mitigation strategy decisions including risk acceptance, reduction, transfer, or avoidance with specific countermeasures
-- **Cybersecurity Goal**: Specific security objectives derived from risk analysis, defining required protection levels and security controls
-- **TARA Analysis**: Complete assessment workflow containing all entities above with traceability links and compliance documentation
+- **Asset**: Represents vehicle system components with attributes like criticality level, interfaces, data flows, security properties, and AI-generated confidence scores for validation tracking
+- **Impact Rating**: Quantified assessment of potential damage levels (safety, financial, operational, privacy) with AI-generated initial ratings and human validation status
+- **Threat Scenario**: Specific cybersecurity threat patterns with AI-discovered scenarios, confidence scores, and human review flags for automated vs. validated threats
+- **Attack Path**: Detailed attack sequences with AI-modeled paths, feasibility assessments, and validation checkpoints for human approval
+- **Attack Feasibility**: AI-calculated likelihood assessments with confidence metrics and fallback to manual analysis when AI confidence falls below 75%
+- **Risk Value**: Calculated risk levels combining AI-generated impact and feasibility with human validation workflow and audit trails
+- **Risk Treatment**: AI-recommended mitigation strategies with human approval workflow and cost monitoring for API usage
+- **Cybersecurity Goal**: Security objectives derived from validated AI analysis with human oversight and compliance documentation
+- **TARA Analysis**: Complete AI-enhanced assessment workflow with automated generation, human validation checkpoints, and persistent storage of approved results only
 
 ---
 

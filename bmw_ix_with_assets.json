@@ -1,0 +1,157 @@
+{
+  "analysis_metadata": {
+    "analysis_name": "BMW iX Electric Vehicle Security Analysis",
+    "vehicle_model": "BMW iX",
+    "analysis_phase": "DESIGN",
+    "completion_status": "IN_PROGRESS",
+    "input_file_path": null,
+    "output_file_path": null,
+    "iso_section": null,
+    "completed_at": null,
+    "id": "3f1cb8b346f041acad9be58212d85ac9",
+    "created_at": "2025-09-30 07:19:32",
+    "updated_at": "2025-09-30 07:19:32"
+  },
+  "statistics": {
+    "total_assets": 10,
+    "total_goals": 0
+  },
+  "assets": [
+    {
+      "name": "Central Gateway ECU",
+      "asset_type": "HARDWARE",
+      "criticality_level": "MEDIUM",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Primary communication hub for vehicle networks\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "2bbeba5dee6d489f97901ea15f229809",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Battery Management System",
+      "asset_type": "HARDWARE",
+      "criticality_level": "MEDIUM",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Controls high-voltage battery charging and monitoring\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "06a8cf1bbb384ba3817ec14396bd1a2c",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "ADAS Processing Unit",
+      "asset_type": "HARDWARE",
+      "criticality_level": "HIGH",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Processes sensor data for autonomous driving features\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "8994efbc2e4a414cafd91c99217118a3",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Infotainment System",
+      "asset_type": "SOFTWARE",
+      "criticality_level": "MEDIUM",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"User interface for entertainment and vehicle settings\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "02972aac4e1142b99408d505c90ee324",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Telematics Control Unit",
+      "asset_type": "HARDWARE",
+      "criticality_level": "HIGH",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Handles external communications and OTA updates\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "f2b065528d59449787f345ecc7472151",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Instrument Cluster",
+      "asset_type": "HARDWARE",
+      "criticality_level": "MEDIUM",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Displays vehicle status and driver information\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "bd73b6c8259a416ab7013cc59eb5bf3f",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "CAN Bus Network",
+      "asset_type": "HARDWARE",
+      "criticality_level": "HIGH",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Primary vehicle communication network\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "711832644f794069bdc6bf546c1f9c53",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Charging Control Unit",
+      "asset_type": "HARDWARE",
+      "criticality_level": "MEDIUM",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Manages DC fast charging and AC charging protocols\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "98ebe65c35a7464f87ea2d592a0b647a",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Digital Key System",
+      "asset_type": "SOFTWARE",
+      "criticality_level": "HIGH",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Smartphone-based vehicle access control\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "731037e4b8d24f1e9737972f1a7db502",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    },
+    {
+      "name": "Over-The-Air Update Service",
+      "asset_type": "SOFTWARE",
+      "criticality_level": "HIGH",
+      "interfaces": "[]",
+      "data_flows": "[]",
+      "security_properties": "{\"description\": \"Remote software update capability\"}",
+      "iso_section": "21434-15.6",
+      "analysis_id": "3f1cb8b346f041acad9be58212d85ac9",
+      "id": "66a68ae132c0454396d96844aa0eb6ee",
+      "created_at": "2025-09-30 07:32:15",
+      "updated_at": "2025-09-30 07:32:15"
+    }
+  ],
+  "cybersecurity_goals": [],
+  "export_metadata": {
+    "exported_at": "2025-09-30T15:33:26.350401",
+    "export_version": "1.0",
+    "iso_compliance": "ISO/SAE 21434"
+  }
+}

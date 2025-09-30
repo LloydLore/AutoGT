@@ -1,0 +1,58 @@
+[
+  {
+    "attack_path_id": "path_b8190db5",
+    "threat_name": "Remote Vehicle Hijacking",
+    "feasibility_factors": {
+      "elapsed_time": 2,
+      "expertise_required": 2,
+      "knowledge_of_target": 3,
+      "window_of_opportunity": 4,
+      "equipment_needed": 4
+    },
+    "overall_feasibility_score": 3.0,
+    "feasibility_rating": "MEDIUM",
+    "ai_analysis_confidence": 0.7953399999999999
+  },
+  {
+    "attack_path_id": "path_c9f00c1d",
+    "threat_name": "CAN Bus Message Injection",
+    "feasibility_factors": {
+      "elapsed_time": 3,
+      "expertise_required": 2,
+      "knowledge_of_target": 3,
+      "window_of_opportunity": 2,
+      "equipment_needed": 2
+    },
+    "overall_feasibility_score": 2.4,
+    "feasibility_rating": "MEDIUM",
+    "ai_analysis_confidence": 0.7603800000000001
+  },
+  {
+    "attack_path_id": "path_f642ff1d",
+    "threat_name": "Infotainment System Compromise",
+    "feasibility_factors": {
+      "elapsed_time": 3,
+      "expertise_required": 2,
+      "knowledge_of_target": 3,
+      "window_of_opportunity": 2,
+      "equipment_needed": 3
+    },
+    "overall_feasibility_score": 2.6,
+    "feasibility_rating": "MEDIUM",
+    "ai_analysis_confidence": 0.7254200000000001
+  },
+  {
+    "attack_path_id": "path_18c26ba0",
+    "threat_name": "Over-The-Air Update Tampering",
+    "feasibility_factors": {
+      "elapsed_time": 3,
+      "expertise_required": 2,
+      "knowledge_of_target": 3,
+      "window_of_opportunity": 2,
+      "equipment_needed": 3
+    },
+    "overall_feasibility_score": 2.6,
+    "feasibility_rating": "MEDIUM",
+    "ai_analysis_confidence": 0.77786
+  }
+]

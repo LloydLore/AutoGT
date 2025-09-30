@@ -1,0 +1,59 @@
+{
+  "analysis_id": "33ac746d-fe83-41fe-a991-2337eaff8136",
+  "analysis_name": "test-ai-workflow",
+  "created_at": "2025-09-30T13:51:24.652509",
+  "current_step": 10,
+  "total_steps": 9,
+  "steps_completed": [
+    {
+      "step": 1,
+      "message": "Analysis created successfully",
+      "timestamp": "2025-09-30T13:51:24.652761"
+    },
+    {
+      "step": 2,
+      "message": "AI identified 5 assets with 0.92 avg confidence",
+      "timestamp": "2025-09-30T13:51:24.653216"
+    },
+    {
+      "step": 3,
+      "message": "AI assessed impacts for 5 assets",
+      "timestamp": "2025-09-30T13:51:24.653602"
+    },
+    {
+      "step": 4,
+      "message": "AI discovered 4 threat scenarios",
+      "timestamp": "2025-09-30T13:51:24.654261"
+    },
+    {
+      "step": 5,
+      "message": "AI modeled 4 attack paths",
+      "timestamp": "2025-09-30T13:51:24.654799"
+    },
+    {
+      "step": 6,
+      "message": "AI analyzed feasibility for 4 paths",
+      "timestamp": "2025-09-30T13:51:24.655021"
+    },
+    {
+      "step": 7,
+      "message": "AI calculated 4 risk assessments",
+      "timestamp": "2025-09-30T13:51:24.655519"
+    },
+    {
+      "step": 8,
+      "message": "AI planned 0 risk treatments",
+      "timestamp": "2025-09-30T13:51:24.655915"
+    },
+    {
+      "step": 9,
+      "message": "AI defined 1 cybersecurity goals",
+      "timestamp": "2025-09-30T13:51:24.656284"
+    },
+    {
+      "step": 10,
+      "message": "Analysis completed successfully",
+      "timestamp": "2025-09-30T13:51:24.656690"
+    }
+  ]
+}

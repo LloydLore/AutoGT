@@ -1,0 +1,439 @@
+[
+  {
+    "id": "474b3d50-83aa-46c5-b639-a1bea2c7414d",
+    "name": "Central ECU",
+    "asset_type": "HARDWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "CAN-FD",
+      "Ethernet",
+      "Diagnostic"
+    ],
+    "description": "AUTOSAR Adaptive Platform ECU for sensor fusion and decision-making",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "5600f7c3-19fa-46be-b3de-845979a2c377",
+    "name": "LiDAR Sensor Array",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Ethernet",
+      "Power"
+    ],
+    "description": "Velodyne HDL-64E 360-degree laser scanning system for 3D mapping",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "b8d7751b-46ec-4666-b74e-d5b3d7e864e7",
+    "name": "Forward Camera System",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "MIPI CSI-2",
+      "CAN"
+    ],
+    "description": "Stereo cameras with image processing for object detection",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "77c39c53-41fc-47e4-bfe9-cf0a2e5c7dcc",
+    "name": "77GHz Radar Units",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "CAN-FD",
+      "Power"
+    ],
+    "description": "mmWave radar sensors for object detection and velocity measurement",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "5ed04bf2-affb-43d1-aa76-115e868ac8aa",
+    "name": "GPS Navigation Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Cellular",
+      "CAN",
+      "Antenna"
+    ],
+    "description": "Dual-frequency GNSS with RTK correction capabilities",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "58e01ca3-6402-4c0d-8b63-bb698ac7ab21",
+    "name": "V2X Communication Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "DSRC",
+      "C-V2X",
+      "CAN"
+    ],
+    "description": "Vehicle-to-infrastructure communication for traffic management",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "a5a82ce5-2624-4909-a775-363d6d21053a",
+    "name": "Hardware Security Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "SPI",
+      "I2C",
+      "CAN"
+    ],
+    "description": "HSM for cryptographic operations and secure boot verification",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "4575256f-e5dd-4aed-983b-e3a78fd3cb4e",
+    "name": "OTA Update Controller",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Cellular",
+      "Ethernet",
+      "Flash"
+    ],
+    "description": "Secure over-the-air firmware update management system",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "12f18750-4b6c-48ac-8e1b-20be77ccdda3",
+    "name": "Touchscreen HMI",
+    "asset_type": "HARDWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "USB",
+      "CAN",
+      "Audio"
+    ],
+    "description": "Human-machine interface with voice and gesture recognition",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "766b70e3-cb94-4273-8692-f49a77056abb",
+    "name": "Emergency Brake Controller",
+    "asset_type": "HARDWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "CAN-FD",
+      "PWM",
+      "Diagnostic"
+    ],
+    "description": "Safety-critical brake-by-wire system with redundancy",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "37743d03-a4c1-4aea-af2d-37bd59e92c9f",
+    "name": "AUTOSAR Adaptive Platform",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "Runtime Environment"
+    ],
+    "description": "Real-time operating system for automotive applications",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "ae23d7b4-5542-4757-9443-d38c0b709ef1",
+    "name": "Sensor Fusion Algorithm",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Data Processing"
+    ],
+    "description": "AI-based algorithm for combining multi-sensor data",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "5d3bc880-19de-4018-a15c-babdd8a4d5c1",
+    "name": "Object Detection Software",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Image Processing"
+    ],
+    "description": "Computer vision software for obstacle recognition",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "d6aff878-dd05-4ae2-ab02-3aff7f651f2a",
+    "name": "V2X Protocol Stack",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Communication Stack"
+    ],
+    "description": "DSRC and C-V2X communication protocol implementation",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "e8b764ba-aab3-4fe7-b5eb-3e4a9dd07c70",
+    "name": "Navigation Software",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Application Layer"
+    ],
+    "description": "GPS navigation and route planning application",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "472514ef-aaa8-4ea3-9082-410b4af50a01",
+    "name": "Cryptographic Libraries",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "Security Layer"
+    ],
+    "description": "Encryption and key management software components",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "96175cb6-c8f2-4987-a100-da96fb88c6cd",
+    "name": "Diagnostic Software",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "LOW",
+    "interfaces": [
+      "Service Layer"
+    ],
+    "description": "ISO 14229 UDS diagnostic service implementation",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "aaab7c38-529a-4cf4-b2f9-d45dad422a92",
+    "name": "CAN-FD Network",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Physical Layer"
+    ],
+    "description": "High-speed Controller Area Network for critical communications",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "3c1e2344-21f9-4f5e-912e-5e42538887ac",
+    "name": "Automotive Ethernet",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Physical Layer"
+    ],
+    "description": "1000BASE-T1 network for high-bandwidth sensor data",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "6abe458f-3ca9-4cf9-93ff-8873890fcbca",
+    "name": "WiFi 802.11ac Interface",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Wireless"
+    ],
+    "description": "Wireless LAN connectivity for infotainment services",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "1bb6d3b2-323c-402e-99f7-2787905fc89d",
+    "name": "Bluetooth 5.0 Interface",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Wireless"
+    ],
+    "description": "Short-range wireless communication for mobile devices",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "f8114627-5316-4a4d-b83e-17a03dc30903",
+    "name": "5G Cellular Interface",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Wireless"
+    ],
+    "description": "High-speed cellular connectivity for OTA and V2X",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "615c4590-fdd6-4e0d-be95-c1d9365fc89b",
+    "name": "Diagnostic Interface",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "LOW",
+    "interfaces": [
+      "Service Port"
+    ],
+    "description": "ISO 14229 compliant diagnostic communication channel",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "8107e073-4f29-48b3-9b90-633172ba04df",
+    "name": "Vehicle Configuration Data",
+    "asset_type": "DATA",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "EEPROM Storage"
+    ],
+    "description": "Vehicle-specific calibration and configuration parameters",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "ac74113e-7823-4adb-a64f-b275765ebeaf",
+    "name": "Cryptographic Certificates",
+    "asset_type": "DATA",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "Secure Storage"
+    ],
+    "description": "X.509 certificates for V2X authentication and encryption",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "4e32f34e-3cdc-4c2a-9183-2907cadaebf0",
+    "name": "Driver Profiles",
+    "asset_type": "DATA",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Encrypted Storage"
+    ],
+    "description": "Personal driver preferences and biometric templates",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "10c28651-b7e1-49f4-a166-c114aca68709",
+    "name": "Location History",
+    "asset_type": "DATA",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Database"
+    ],
+    "description": "GPS tracking data and route prediction algorithms",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "0cc624dd-d95f-45ff-8df2-11cbba4cb370",
+    "name": "Calibration Parameters",
+    "asset_type": "DATA",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Flash Storage"
+    ],
+    "description": "Sensor calibration data for fusion algorithms",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  }
+]

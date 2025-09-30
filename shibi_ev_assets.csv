@@ -1,0 +1,9 @@
+name,asset_type,criticality_level,interfaces,data_flows,security_properties
+Battery Management System,HARDWARE,VERY_HIGH,"[""CAN"", ""DC Power"", ""Temperature Sensors""]","[""Battery status"", ""Charging control"", ""Thermal management""]","{""description"": ""Main battery pack controller for safety and performance""}"
+Electric Motor Controller,HARDWARE,VERY_HIGH,"[""CAN"", ""Power Electronics"", ""PWM""]","[""Motor control signals"", ""Torque commands"", ""Speed feedback""]","{""description"": ""Controls electric motor for propulsion""}"
+Vehicle Control Unit,HARDWARE,HIGH,"[""CAN High"", ""CAN Low"", ""Ethernet""]","[""Vehicle dynamics"", ""Driver inputs"", ""System coordination""]","{""description"": ""Central vehicle control and coordination""}"
+Charging Port Controller,HARDWARE,HIGH,"[""CAN"", ""AC/DC Power"", ""Pilot Signal""]","[""Charging protocols"", ""Power negotiation"", ""Safety interlocks""]","{""description"": ""Manages AC and DC charging operations""}"
+Infotainment System,SOFTWARE,MEDIUM,"[""WiFi"", ""Bluetooth"", ""USB"", ""CAN""]","[""Media streaming"", ""Navigation"", ""Vehicle status""]","{""description"": ""Entertainment and information display""}"
+Mobile App Gateway,SOFTWARE,MEDIUM,"[""Cellular"", ""WiFi"", ""Bluetooth""]","[""Remote commands"", ""Vehicle status"", ""User authentication""]","{""description"": ""Mobile connectivity for remote vehicle access""}"
+Instrument Cluster,HARDWARE,MEDIUM,"[""CAN"", ""Display Interface""]","[""Speed"", ""Battery level"", ""Warning indicators""]","{""description"": ""Driver information display""}"
+Door Lock System,HARDWARE,LOW,"[""CAN"", ""RFID"", ""Physical Keys""]","[""Lock/unlock commands"", ""Access control""]","{""description"": ""Electronic door access control""}"

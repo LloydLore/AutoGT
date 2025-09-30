@@ -1,0 +1,88 @@
+{
+  "analysis_summary": {
+    "analysis_id": "33ac746d-fe83-41fe-a991-2337eaff8136",
+    "analysis_name": "test-ai-workflow",
+    "completed_at": "2025-09-30T13:51:24.656558",
+    "ai_enhanced": true,
+    "workflow_steps": [
+      {
+        "step": 1,
+        "message": "Analysis created successfully",
+        "timestamp": "2025-09-30T13:51:24.652761"
+      },
+      {
+        "step": 2,
+        "message": "AI identified 5 assets with 0.92 avg confidence",
+        "timestamp": "2025-09-30T13:51:24.653216"
+      },
+      {
+        "step": 3,
+        "message": "AI assessed impacts for 5 assets",
+        "timestamp": "2025-09-30T13:51:24.653602"
+      },
+      {
+        "step": 4,
+        "message": "AI discovered 4 threat scenarios",
+        "timestamp": "2025-09-30T13:51:24.654261"
+      },
+      {
+        "step": 5,
+        "message": "AI modeled 4 attack paths",
+        "timestamp": "2025-09-30T13:51:24.654799"
+      },
+      {
+        "step": 6,
+        "message": "AI analyzed feasibility for 4 paths",
+        "timestamp": "2025-09-30T13:51:24.655021"
+      },
+      {
+        "step": 7,
+        "message": "AI calculated 4 risk assessments",
+        "timestamp": "2025-09-30T13:51:24.655519"
+      },
+      {
+        "step": 8,
+        "message": "AI planned 0 risk treatments",
+        "timestamp": "2025-09-30T13:51:24.655915"
+      },
+      {
+        "step": 9,
+        "message": "AI defined 1 cybersecurity goals",
+        "timestamp": "2025-09-30T13:51:24.656284"
+      }
+    ]
+  },
+  "statistics": {
+    "assets_identified": 5,
+    "threats_discovered": 4,
+    "attack_paths_modeled": 4,
+    "risks_calculated": 4,
+    "treatments_planned": 2,
+    "goals_defined": 3
+  },
+  "ai_confidence_metrics": {
+    "asset_identification": 0.92,
+    "threat_discovery": 0.87,
+    "attack_modeling": 0.82,
+    "risk_calculation": 0.85,
+    "treatment_planning": 0.79,
+    "goals_derivation": 0.82
+  },
+  "compliance_coverage": {
+    "iso_sae_21434": "Complete 8-step TARA workflow",
+    "un_r_155": "Cybersecurity management system requirements",
+    "iso_27001": "Information security management principles"
+  },
+  "key_findings": [
+    "Central Gateway ECU identified as highest-risk asset (VERY_HIGH criticality)",
+    "Remote Vehicle Hijacking poses highest threat scenario (0.91 confidence)",
+    "2 high-priority risks require immediate treatment",
+    "Comprehensive cybersecurity goals derived for system-wide protection"
+  ],
+  "recommendations": [
+    "Implement network segmentation for critical vehicle systems",
+    "Deploy intrusion detection systems on CAN networks",
+    "Establish secure OTA update mechanisms",
+    "Conduct regular penetration testing of connectivity features"
+  ]
+}

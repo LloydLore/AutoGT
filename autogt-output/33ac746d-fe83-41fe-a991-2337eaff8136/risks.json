@@ -1,0 +1,50 @@
+[
+  {
+    "risk_id": "risk_5e40853a",
+    "threat_name": "Remote Vehicle Hijacking",
+    "asset_name": "Central Gateway ECU",
+    "impact_score": 4.0,
+    "feasibility_score": 3.0,
+    "risk_matrix_position": "I4_F3",
+    "calculated_risk_score": 12.0,
+    "risk_level": "MEDIUM",
+    "risk_acceptance_recommendation": "MONITOR",
+    "ai_calculation_confidence": 0.8376699999999999
+  },
+  {
+    "risk_id": "risk_b00b9c5f",
+    "threat_name": "CAN Bus Message Injection",
+    "asset_name": "Telematics Control Unit",
+    "impact_score": 3.75,
+    "feasibility_score": 2.4,
+    "risk_matrix_position": "I3_F2",
+    "calculated_risk_score": 9.0,
+    "risk_level": "MEDIUM",
+    "risk_acceptance_recommendation": "MONITOR",
+    "ai_calculation_confidence": 0.81569
+  },
+  {
+    "risk_id": "risk_3a4cc8cd",
+    "threat_name": "Infotainment System Compromise",
+    "asset_name": "Infotainment System",
+    "impact_score": 3.25,
+    "feasibility_score": 2.6,
+    "risk_matrix_position": "I3_F2",
+    "calculated_risk_score": 8.450000000000001,
+    "risk_level": "MEDIUM",
+    "risk_acceptance_recommendation": "MONITOR",
+    "ai_calculation_confidence": 0.7922100000000001
+  },
+  {
+    "risk_id": "risk_e4add86d",
+    "threat_name": "Over-The-Air Update Tampering",
+    "asset_name": "Vehicle Communication Bus",
+    "impact_score": 3.5,
+    "feasibility_score": 2.6,
+    "risk_matrix_position": "I3_F2",
+    "calculated_risk_score": 9.1,
+    "risk_level": "MEDIUM",
+    "risk_acceptance_recommendation": "MONITOR",
+    "ai_calculation_confidence": 0.8319300000000001
+  }
+]

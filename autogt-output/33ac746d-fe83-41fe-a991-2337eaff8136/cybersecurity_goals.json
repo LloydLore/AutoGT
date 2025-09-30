@@ -1,0 +1,29 @@
+[
+  {
+    "goal_id": "goal_45c749d8",
+    "treatment_id": "SYSTEM_LEVEL",
+    "threat_name": "All identified threats",
+    "asset_name": "Complete vehicle system",
+    "goal_title": "Establish comprehensive cybersecurity posture",
+    "goal_description": "Implement organization-wide cybersecurity management system per ISO/SAE 21434",
+    "protection_level": "ASIL-B equivalent",
+    "security_controls": [
+      "Cybersecurity governance framework",
+      "Incident response procedures",
+      "Security monitoring and logging",
+      "Supply chain security requirements"
+    ],
+    "verification_criteria": [
+      "CSMS established and operational",
+      "All vehicle cybersecurity risks assessed",
+      "Security controls verified and validated"
+    ],
+    "implementation_timeline": "12-18 months",
+    "compliance_references": [
+      "ISO/SAE 21434",
+      "UN-R 155",
+      "ISO 27001"
+    ],
+    "ai_derivation_confidence": 0.85
+  }
+]

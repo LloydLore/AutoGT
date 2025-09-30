@@ -1,0 +1,11 @@
+name,type,criticality,description
+Central Gateway ECU,HARDWARE,VERY_HIGH,"Primary communication hub for vehicle networks"
+Battery Management System,HARDWARE,VERY_HIGH,"Controls high-voltage battery charging and monitoring"
+ADAS Processing Unit,HARDWARE,HIGH,"Processes sensor data for autonomous driving features"
+Infotainment System,SOFTWARE,MEDIUM,"User interface for entertainment and vehicle settings"
+Telematics Control Unit,HARDWARE,HIGH,"Handles external communications and OTA updates"
+Instrument Cluster,HARDWARE,MEDIUM,"Displays vehicle status and driver information"
+CAN Bus Network,COMMUNICATION,HIGH,"Primary vehicle communication network"
+Charging Control Unit,HARDWARE,VERY_HIGH,"Manages DC fast charging and AC charging protocols"
+Digital Key System,SOFTWARE,HIGH,"Smartphone-based vehicle access control"
+Over-The-Air Update Service,SOFTWARE,HIGH,"Remote software update capability"

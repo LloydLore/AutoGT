@@ -1,0 +1,197 @@
+[
+  {
+    "name": "Autonomous Driving Controller",
+    "asset_type": "HARDWARE",
+    "criticality_level": "SAFETY_CRITICAL",
+    "description": "Central compute unit for autonomous driving decisions and sensor fusion",
+    "interfaces": [
+      "Ethernet",
+      "CAN-FD",
+      "PCIe",
+      "MIPI-CSI",
+      "Sensor buses"
+    ],
+    "data_flows": [
+      "Lidar point clouds",
+      "Camera streams",
+      "Radar data",
+      "GPS coordinates",
+      "V2X messages"
+    ],
+    "security_properties": {
+      "confidentiality": "HIGH",
+      "integrity": "SAFETY_CRITICAL",
+      "availability": "SAFETY_CRITICAL",
+      "authenticity": "CRITICAL"
+    },
+    "ai_confidence_score": 0.98,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI + automotive domain knowledge",
+    "ai_reasoning": "Critical safety component requiring highest security due to control over vehicle movement"
+  },
+  {
+    "name": "V2X Communication Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "description": "Vehicle-to-Everything communication for traffic coordination and safety",
+    "interfaces": [
+      "5G-V2X",
+      "DSRC",
+      "WiFi 6",
+      "Bluetooth 5",
+      "Internal Ethernet"
+    ],
+    "data_flows": [
+      "Traffic signals",
+      "Emergency broadcasts",
+      "Vehicle status",
+      "Infrastructure data"
+    ],
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "HIGH",
+      "availability": "HIGH",
+      "authenticity": "HIGH"
+    },
+    "ai_confidence_score": 0.94,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI threat modeling",
+    "ai_reasoning": "External communication vector requiring strong authentication and integrity"
+  },
+  {
+    "name": "Cloud Connectivity Gateway",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "description": "Secure gateway for cloud services, OTA updates, and remote diagnostics",
+    "interfaces": [
+      "5G modem",
+      "Edge computing",
+      "Secure enclave",
+      "Internal networks"
+    ],
+    "data_flows": [
+      "OTA packages",
+      "Telemetry data",
+      "Cloud services",
+      "Remote diagnostics"
+    ],
+    "security_properties": {
+      "confidentiality": "VERY_HIGH",
+      "integrity": "VERY_HIGH",
+      "availability": "HIGH",
+      "authenticity": "VERY_HIGH"
+    },
+    "ai_confidence_score": 0.96,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI security analysis",
+    "ai_reasoning": "Primary cloud interface requiring strongest security controls"
+  },
+  {
+    "name": "Sensor Fusion AI Engine",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "SAFETY_CRITICAL",
+    "description": "AI/ML algorithms processing sensor data for autonomous driving decisions",
+    "interfaces": [
+      "Neural network APIs",
+      "Sensor data pipelines",
+      "Decision engines"
+    ],
+    "data_flows": [
+      "Raw sensor data",
+      "Processed features",
+      "Driving decisions",
+      "Confidence scores"
+    ],
+    "security_properties": {
+      "confidentiality": "HIGH",
+      "integrity": "SAFETY_CRITICAL",
+      "availability": "SAFETY_CRITICAL",
+      "authenticity": "HIGH"
+    },
+    "ai_confidence_score": 0.97,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI + ML security expertise",
+    "ai_reasoning": "AI model integrity critical for safe autonomous operation"
+  },
+  {
+    "name": "Vehicle Digital Identity System",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "SECURITY_CRITICAL",
+    "description": "PKI-based identity management for vehicle authentication and authorization",
+    "interfaces": [
+      "HSM APIs",
+      "Certificate stores",
+      "Authentication protocols"
+    ],
+    "data_flows": [
+      "Digital certificates",
+      "Authentication tokens",
+      "Authorization policies"
+    ],
+    "security_properties": {
+      "confidentiality": "VERY_HIGH",
+      "integrity": "VERY_HIGH",
+      "availability": "HIGH",
+      "authenticity": "VERY_HIGH"
+    },
+    "ai_confidence_score": 0.95,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI cryptographic analysis",
+    "ai_reasoning": "Foundation of vehicle security architecture requiring maximum protection"
+  },
+  {
+    "name": "Autonomous Vehicle Data Lake",
+    "asset_type": "DATA",
+    "criticality_level": "PRIVACY_CRITICAL",
+    "description": "Centralized repository of driving patterns, sensor data, and personal information",
+    "interfaces": [
+      "Data ingestion APIs",
+      "Analytics engines",
+      "Privacy controls"
+    ],
+    "data_flows": [
+      "Driving behavior",
+      "Location history",
+      "Biometric data",
+      "Usage patterns"
+    ],
+    "security_properties": {
+      "confidentiality": "VERY_HIGH",
+      "integrity": "HIGH",
+      "availability": "MEDIUM",
+      "privacy": "VERY_HIGH"
+    },
+    "ai_confidence_score": 0.93,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI privacy analysis",
+    "ai_reasoning": "Contains highly sensitive personal data requiring strict privacy protection"
+  },
+  {
+    "name": "Safety-Critical Communication Bus",
+    "asset_type": "COMMUNICATION",
+    "criticality_level": "SAFETY_CRITICAL",
+    "description": "High-speed deterministic network for safety-critical vehicle functions",
+    "interfaces": [
+      "Time-Sensitive Networking",
+      "CAN-FD",
+      "Ethernet AVB",
+      "Safety protocols"
+    ],
+    "data_flows": [
+      "Safety commands",
+      "Status monitoring",
+      "Emergency signals",
+      "Diagnostic data"
+    ],
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "SAFETY_CRITICAL",
+      "availability": "SAFETY_CRITICAL",
+      "timing": "CRITICAL"
+    },
+    "ai_confidence_score": 0.99,
+    "review_status": "AI_VERIFIED",
+    "source_analysis": "Gemini AI safety analysis",
+    "ai_reasoning": "Real-time safety communication requiring guaranteed integrity and timing"
+  }
+]

@@ -40,6 +40,8 @@ class DatabaseService:
         self.session_factory: Optional[sessionmaker] = None
         self._setup_engine()
         self._setup_session_factory()
+        # Auto-create tables if they don't exist
+        self.create_all_tables()
     
     def _get_database_url(self) -> str:
         """Get database URL from environment or use SQLite default."""

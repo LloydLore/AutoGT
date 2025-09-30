@@ -45,11 +45,9 @@ class TaraAnalysis(BaseModel):
         nullable=False, default=CompletionStatus.IN_PROGRESS
     )
     
-    # File paths
-    input_file_path: Mapped[str] = mapped_column(String(500), nullable=False)
-    output_file_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-    
-    # ISO/SAE 21434 traceability
+    # File paths  
+    input_file_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    output_file_path: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)    # ISO/SAE 21434 traceability
     iso_section: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     
     # Completion tracking
@@ -87,7 +85,7 @@ class TaraAnalysis(BaseModel):
         Reference: data-model.md validation rules
         """
         if not self.input_file_path:
-            return False
+            return True  # No file is valid for interactive analyses
             
         supported_extensions = ['.xlsx', '.xls', '.csv', '.json', '.txt']
         return any(self.input_file_path.lower().endswith(ext) for ext in supported_extensions)

@@ -1,0 +1,176 @@
+[
+  {
+    "name": "Autonomous Vehicle AI Model Poisoning",
+    "threat_id": "threat_89fc1f86",
+    "description": "Adversarial attacks against ML models to cause misclassification of objects and unsafe decisions",
+    "threat_actors": [
+      "STATE_ACTORS",
+      "ADVANCED_RESEARCHERS",
+      "MALICIOUS_INSIDERS"
+    ],
+    "motivation": "Cause accidents, demonstrate vulnerabilities, espionage",
+    "attack_vectors": [
+      "Adversarial examples in training data",
+      "Real-time adversarial patches on road signs",
+      "Sensor spoofing during model inference",
+      "Supply chain compromise of training datasets"
+    ],
+    "prerequisites": [
+      "ML expertise and adversarial attack knowledge",
+      "Access to training pipeline or inference inputs",
+      "Understanding of vehicle's AI architecture"
+    ],
+    "target_assets": [
+      "Autonomous Driving Controller",
+      "Sensor Fusion AI Engine"
+    ],
+    "iso_threat_categories": [
+      "T.1",
+      "T.7",
+      "T.9"
+    ],
+    "severity": "CRITICAL",
+    "ai_discovery_confidence": 0.94,
+    "threat_intelligence_source": "Gemini AI + automotive ML security research",
+    "ai_reasoning": "ML models vulnerable to adversarial attacks with safety-critical consequences"
+  },
+  {
+    "name": "V2X Protocol Exploitation and Traffic Manipulation",
+    "threat_id": "threat_d32a9e17",
+    "description": "Exploitation of V2X communication protocols to inject false traffic information and manipulate vehicle behavior",
+    "threat_actors": [
+      "CYBERCRIMINALS",
+      "NATION_STATES",
+      "TERRORISTS"
+    ],
+    "motivation": "Traffic disruption, targeted attacks, mass manipulation",
+    "attack_vectors": [
+      "Rogue V2X infrastructure deployment",
+      "Man-in-the-middle attacks on V2X messages",
+      "Replay attacks with modified timestamps",
+      "Cryptographic key compromise of V2X certificates"
+    ],
+    "prerequisites": [
+      "V2X protocol knowledge and radio equipment",
+      "Physical proximity to target vehicles",
+      "Understanding of traffic coordination algorithms"
+    ],
+    "target_assets": [
+      "V2X Communication Module",
+      "Autonomous Driving Controller"
+    ],
+    "iso_threat_categories": [
+      "T.2",
+      "T.3",
+      "T.6"
+    ],
+    "severity": "HIGH",
+    "ai_discovery_confidence": 0.91,
+    "threat_intelligence_source": "Gemini AI + V2X security analysis",
+    "ai_reasoning": "V2X protocols create new attack surfaces for coordinated multi-vehicle attacks"
+  },
+  {
+    "name": "Cloud-Scale OTA Supply Chain Attack",
+    "threat_id": "threat_fbdc60e7",
+    "description": "Compromise of cloud infrastructure to distribute malicious OTA updates to entire vehicle fleets",
+    "threat_actors": [
+      "ADVANCED_PERSISTENT_THREATS",
+      "STATE_ACTORS",
+      "INSIDER_THREATS"
+    ],
+    "motivation": "Mass vehicle compromise, espionage, ransom at scale",
+    "attack_vectors": [
+      "Cloud infrastructure compromise",
+      "Software build pipeline infiltration",
+      "Certificate authority compromise",
+      "Supply chain injection in OTA packages"
+    ],
+    "prerequisites": [
+      "Advanced persistent access capabilities",
+      "Cloud security expertise",
+      "Understanding of automotive OTA architecture"
+    ],
+    "target_assets": [
+      "Cloud Connectivity Gateway",
+      "Vehicle Digital Identity System"
+    ],
+    "iso_threat_categories": [
+      "T.6",
+      "T.8",
+      "T.9"
+    ],
+    "severity": "CRITICAL",
+    "ai_discovery_confidence": 0.96,
+    "threat_intelligence_source": "Gemini AI + cloud security intelligence",
+    "ai_reasoning": "Cloud-scale attacks can compromise millions of vehicles simultaneously"
+  },
+  {
+    "name": "Sensor Fusion Data Injection Attack",
+    "threat_id": "threat_86de9ab2",
+    "description": "Sophisticated attack combining multiple sensor spoofing techniques to create consistent false environmental perception",
+    "threat_actors": [
+      "ADVANCED_RESEARCHERS",
+      "STATE_ACTORS",
+      "SOPHISTICATED_CRIMINALS"
+    ],
+    "motivation": "Targeted vehicle manipulation, research demonstration, assassination",
+    "attack_vectors": [
+      "Coordinated LiDAR spoofing with laser systems",
+      "Camera feed manipulation through projected images",
+      "GPS spoofing combined with IMU attacks",
+      "Radar cross-section modification attacks"
+    ],
+    "prerequisites": [
+      "Deep sensor technology expertise",
+      "Sophisticated attack equipment and coordination",
+      "Physical proximity and surveillance of target"
+    ],
+    "target_assets": [
+      "Autonomous Driving Controller",
+      "Sensor Fusion AI Engine"
+    ],
+    "iso_threat_categories": [
+      "T.1",
+      "T.4",
+      "T.7"
+    ],
+    "severity": "HIGH",
+    "ai_discovery_confidence": 0.89,
+    "threat_intelligence_source": "Gemini AI + sensor security research",
+    "ai_reasoning": "Multi-sensor attacks can bypass individual sensor validation mechanisms"
+  },
+  {
+    "name": "Privacy-Focused Data Exfiltration Campaign",
+    "threat_id": "threat_9dccc4da",
+    "description": "Sophisticated data mining operation targeting vehicle data lakes for personal information and behavioral patterns",
+    "threat_actors": [
+      "DATA_BROKERS",
+      "NATION_STATES",
+      "CORPORATE_ESPIONAGE"
+    ],
+    "motivation": "Mass surveillance, behavioral analysis, commercial intelligence",
+    "attack_vectors": [
+      "Insider access to data lake systems",
+      "API exploitation for bulk data access",
+      "Machine learning inference attacks",
+      "Cross-correlation with external data sources"
+    ],
+    "prerequisites": [
+      "Data science and analytics expertise",
+      "Access to vehicle data systems or APIs",
+      "Understanding of privacy protection mechanisms"
+    ],
+    "target_assets": [
+      "Autonomous Vehicle Data Lake",
+      "Cloud Connectivity Gateway"
+    ],
+    "iso_threat_categories": [
+      "T.5",
+      "T.8"
+    ],
+    "severity": "MEDIUM",
+    "ai_discovery_confidence": 0.87,
+    "threat_intelligence_source": "Gemini AI + privacy threat analysis",
+    "ai_reasoning": "Large-scale data collection creates attractive targets for privacy violations"
+  }
+]

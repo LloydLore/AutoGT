@@ -1,0 +1,120 @@
+[
+  {
+    "name": "Remote Vehicle Hijacking",
+    "threat_id": "threat_52c3a717",
+    "description": "Attacker gains remote control of vehicle functions through telematics vulnerabilities",
+    "threat_actors": [
+      "EXTERNAL_ATTACKER",
+      "ORGANIZED_CRIME"
+    ],
+    "motivation": "Theft, extortion, or causing harm",
+    "attack_vectors": [
+      "Cellular network exploitation",
+      "WiFi man-in-the-middle",
+      "Bluetooth hijacking"
+    ],
+    "prerequisites": [
+      "Network access",
+      "Protocol knowledge",
+      "Exploitation tools"
+    ],
+    "target_assets": [
+      "Telematics Control Unit",
+      "Central Gateway ECU"
+    ],
+    "iso_threat_categories": [
+      "T.1",
+      "T.2",
+      "T.7"
+    ],
+    "ai_discovery_confidence": 0.91,
+    "threat_intelligence_source": "AutoGen threat_hunter agent"
+  },
+  {
+    "name": "CAN Bus Message Injection",
+    "threat_id": "threat_3a1273c0",
+    "description": "Injection of malicious CAN messages to manipulate vehicle behavior",
+    "threat_actors": [
+      "EXTERNAL_ATTACKER",
+      "INSIDER_THREAT"
+    ],
+    "motivation": "Vehicle manipulation, safety compromise",
+    "attack_vectors": [
+      "OBD-II port access",
+      "Compromised ECU",
+      "Wireless gateway"
+    ],
+    "prerequisites": [
+      "Physical or network access",
+      "CAN protocol knowledge"
+    ],
+    "target_assets": [
+      "Vehicle Communication Bus",
+      "Central Gateway ECU"
+    ],
+    "iso_threat_categories": [
+      "T.3",
+      "T.4"
+    ],
+    "ai_discovery_confidence": 0.87,
+    "threat_intelligence_source": "AutoGen threat_hunter agent"
+  },
+  {
+    "name": "Infotainment System Compromise",
+    "threat_id": "threat_1907abd8",
+    "description": "Exploitation of infotainment vulnerabilities to access vehicle data or escalate privileges",
+    "threat_actors": [
+      "EXTERNAL_ATTACKER",
+      "MALICIOUS_APP"
+    ],
+    "motivation": "Data theft, privacy violation, lateral movement",
+    "attack_vectors": [
+      "Malicious app installation",
+      "Web browser exploitation",
+      "USB malware"
+    ],
+    "prerequisites": [
+      "User interaction",
+      "Application vulnerabilities"
+    ],
+    "target_assets": [
+      "Infotainment System",
+      "Vehicle Operational Data"
+    ],
+    "iso_threat_categories": [
+      "T.5",
+      "T.8"
+    ],
+    "ai_discovery_confidence": 0.83,
+    "threat_intelligence_source": "AutoGen threat_hunter agent"
+  },
+  {
+    "name": "Over-The-Air Update Tampering",
+    "threat_id": "threat_0f192dd7",
+    "description": "Interception and modification of OTA updates to install malicious firmware",
+    "threat_actors": [
+      "ADVANCED_PERSISTENT_THREAT",
+      "STATE_ACTOR"
+    ],
+    "motivation": "Persistent access, mass vehicle compromise",
+    "attack_vectors": [
+      "Man-in-the-middle attacks",
+      "Certificate spoofing",
+      "Update server compromise"
+    ],
+    "prerequisites": [
+      "Network positioning",
+      "Cryptographic capabilities"
+    ],
+    "target_assets": [
+      "Telematics Control Unit",
+      "Central Gateway ECU"
+    ],
+    "iso_threat_categories": [
+      "T.6",
+      "T.9"
+    ],
+    "ai_discovery_confidence": 0.89,
+    "threat_intelligence_source": "AutoGen threat_hunter agent"
+  }
+]

@@ -71,12 +71,14 @@
 
 ### CLI Contract Tests (from contracts/cli.md)
 
-- [x] T011 [P] Contract test `autogt analysis create` in `tests/contract/test_analysis_create_cli.py`
+- [x] T011 ✅ Contract test `autogt analysis create` in `tests/contract/test_analysis_create_cli.py`
   **→ Reference**: contracts/cli.md lines 19-61 (analysis create command spec)
   **→ Validate**: Arguments, options, output format
-- [x] T012 [P] Contract test `autogt analysis list` in `tests/contract/test_analysis_list_cli.py`
+  **→ Status**: COMPLETED - All 6 contract tests passing
+- [x] T012 ✅ Contract test `autogt analysis list` in `tests/contract/test_analysis_list_cli.py`
   **→ Reference**: contracts/cli.md lines 62-89 (analysis list command spec)
   **→ Validate**: List formatting, filtering options
+  **→ Status**: COMPLETED - All 5 contract tests passing
 - [x] T013 [P] Contract test `autogt analysis show` in `tests/contract/test_analysis_show_cli.py`
   **→ Reference**: contracts/cli.md lines 90-122 (analysis show command spec)
   **→ Validate**: Detail display, output formats
@@ -150,29 +152,70 @@
   **→ Reference**: data-model.md lines 196-222 (CybersecurityGoal entity definition)
   **→ Fields**: goal_description, security_controls, verification_criteria, iso_reference
   **→ Compliance**: ISO/SAE 21434 traceability
-- [x] T031 [P] TaraAnalysis model with audit fields in `src/autogt/models/analysis.py`
+- [x] T031 ✅ TaraAnalysis model with audit fields in `src/autogt/models/analysis.py`
   **→ Reference**: data-model.md lines 223-271 (TaraAnalysis entity definition)
   **→ Fields**: analysis_name, vehicle_model, current_step, status, created_at, updated_at
   **→ Audit**: 3-year retention requirements
 
 ### Services and AI Integration
 
-- [x] T032 [P] AutoGen agent setup with Gemini client in `src/autogt/services/autogen_agent.py`
+- [x] T032 [P] AutoGen core framework setup in `src/autogt/services/autogen_core.py`
   **→ Reference**: research.md lines 63-73 (Gemini integration pattern)
-  **→ Pattern**: RoundRobinGroupChat for 8-step sequential processing
   **→ Setup**: OpenAIChatCompletionClient with Gemini base_url
   **→ Context**: BufferedChatCompletionContext for memory optimization
+- [ ] T032a Specialized TARA agents definition in `src/autogt/services/tara_agents.py`
+  **→ Reference**: research.md lines 19-35 (AutoGen multi-agent patterns)
+  **→ Agents**: asset_analyst, threat_hunter, risk_calculator, attack_path_builder, treatment_advisor, goal_definer
+  **→ Tools**: Each agent gets specific function tools for TARA calculations
+  **→ Conversation**: RoundRobinGroupChat for sequential step processing
+- [x] T032b Gemini integration per agent in `src/autogt/services/gemini_integration.py`
+  **→ Reference**: research.md lines 63-73 (Gemini integration pattern)
+  **→ Model Selection**: Gemini-1.5-pro for complex analysis, Gemini-1.5-flash for simple tasks
+  **→ Retry Logic**: Exponential backoff for API failures
+  **→ Confidence Scoring**: Parse AI response confidence for human validation triggers
 - [x] T033 [P] File handler for multi-format input in `src/autogt/services/file_handler.py`
   **→ Reference**: plan.md lines 75-76 (multi-format support)
   **→ Formats**: Excel (.xlsx), CSV, JSON, text files
   **→ Validation**: 10MB file size limit, format detection
   **→ Libraries**: pandas, openpyxl for processing
-- [x] T034 TARA processor orchestrating 8-step workflow in `src/autogt/services/tara_processor.py`
-  **→ Reference**: quickstart.md lines 83-295 (8-step TARA process)
+- [x] T034 TARA state machine coordination in `src/autogt/services/tara_state_machine.py`
+  **→ Reference**: data-model.md lines 223-271 (TaraAnalysis current_step field)
+  **→ State Transitions**: 8-step workflow coordination with rollback support
   **→ Dependencies**: T032 (AutoGen agents), T023-T031 (all models)
-  **→ Workflow**: Asset definition → Impact rating → Threat identification → Attack paths → Feasibility → Risk values → Treatments → Goals
   **→ Performance**: Must meet <10s single asset, <5min full model targets
-- [x] T035 [P] Database service with SQLAlchemy session management in `src/autogt/services/database.py`
+- [ ] T034a Step 1: Asset Definition Engine in `src/autogt/services/steps/asset_definition.py`
+  **→ Reference**: quickstart.md lines 83-120, data-model.md lines 5-33
+  **→ Logic**: Parse input file → validate asset data → create Asset models
+  **→ AI Integration**: Use asset_analyst agent for missing field inference
+- [x] T034b Step 2: Impact Rating Calculator in `src/autogt/services/steps/impact_rating.py`
+  **→ Reference**: quickstart.md lines 121-145, data-model.md lines 115-141
+  **→ Logic**: Safety impact → security impact → operational impact scoring
+  **→ AI Integration**: Use impact_assessor agent for severity classification
+- [x] T034c Step 3: Threat Identification Engine in `src/autogt/services/steps/threat_identification.py`
+  **→ Reference**: quickstart.md lines 146-180, data-model.md lines 34-61
+  **→ Logic**: Asset analysis → threat library lookup → AI threat discovery
+  **→ AI Integration**: Use threat_hunter agent with Gemini for novel threats
+- [x] T034d Step 4: Attack Path Builder in `src/autogt/services/steps/attack_paths.py`
+  **→ Reference**: quickstart.md lines 181-210, data-model.md lines 62-87
+  **→ Logic**: Threat scenarios → attack step sequences → path validation
+  **→ AI Integration**: Use attack_path_builder agent for chain construction
+- [x] T034e Step 5: Feasibility Assessment in `src/autogt/services/steps/feasibility_assessment.py`
+  **→ Reference**: quickstart.md lines 211-240, data-model.md lines 88-114
+  **→ Logic**: Attack complexity → resource requirements → feasibility scoring
+  **→ AI Integration**: Use feasibility_assessor agent for complexity analysis
+- [x] T034f Step 6: Risk Value Calculator in `src/autogt/services/steps/risk_calculation.py`
+  **→ Reference**: quickstart.md lines 241-270, data-model.md lines 142-168
+  **→ Logic**: Impact × Feasibility → risk matrix → final risk values
+  **→ AI Integration**: Use risk_calculator agent for complex calculations
+- [x] T034g Step 7: Treatment Recommendations in `src/autogt/services/steps/risk_treatment.py`
+  **→ Reference**: quickstart.md lines 271-290, data-model.md lines 169-195
+  **→ Logic**: Risk levels → treatment options → mitigation strategies
+  **→ AI Integration**: Use treatment_advisor agent for recommendation generation
+- [x] T034h Step 8: Goal Definition in `src/autogt/services/steps/goal_definition.py`
+  **→ Reference**: quickstart.md lines 291-295, data-model.md lines 196-222
+  **→ Logic**: Treatment measures → security controls → cybersecurity goals
+  **→ AI Integration**: Use goal_definer agent for control specification
+- [x] T035 ✅ Database service with SQLAlchemy session management in `src/autogt/services/database.py`
   **→ Reference**: plan.md lines 74 (SQLite dev, PostgreSQL prod)
   **→ Features**: Session management, connection pooling
   **→ Migrations**: Support for Alembic schema changes
@@ -190,7 +233,10 @@
 - [x] T038 Analysis command group (create, list, show) in `src/autogt/cli/commands/analysis.py`
   **→ Reference**: contracts/cli.md lines 19-122 (analysis commands)
   **→ Commands**: create (with file input), list (with filtering), show (with details)
-  **→ Dependencies**: T034 (TARA processor), T035 (database service)
+  **→ Input Validation**: See contracts/cli.md lines 23-35 for file size/format validation
+  **→ Output Format**: See contracts/cli.md lines 36-50 for JSON response structure
+  **→ Error Codes**: See contracts/cli.md lines 51-55 for exit code mapping
+  **→ Dependencies**: T034 (TARA state machine), T035 (database service), T047 (service bridge)
 - [x] T039 Assets command group (define) in `src/autogt/cli/commands/assets.py`
   **→ Reference**: contracts/cli.md lines 123-176 (assets define command)
   **→ Features**: Interactive asset definition, validation
@@ -215,7 +261,7 @@
   **→ Setup**: Initialize Alembic, create migration for all 9 models
   **→ Features**: Support SQLite (dev) and PostgreSQL (prod)
   **→ Dependencies**: T023-T031 (all models), T035 (database service)
-- [x] T044 Configuration management for Gemini API keys in `src/autogt/lib/config.py`
+- [x] T044 ✅ Configuration management for Gemini API keys in `src/autogt/lib/config.py`
   **→ Reference**: research.md lines 53-57 (Gemini authentication)
   **→ Features**: Environment variable loading, config file support
   **→ Security**: API key validation, secure storage
@@ -225,23 +271,45 @@
   **→ Features**: Custom exception classes, structured logging
   **→ Compliance**: 3-year audit log retention
   **→ Integration**: Error handling in all services and CLI commands
+- [x] T046 Model validation pipeline in `src/autogt/lib/validators.py`
+  **→ Reference**: data-model.md validation rules throughout
+  **→ Cross-Model Validations**: Asset↔ThreatScenario integrity, AttackPath sequences, RiskValue calculations
+  **→ ISO Compliance**: Section reference validity, traceability requirements
+  **→ Usage**: Called before each state transition in T034
+- [x] T047 CLI service integration layer in `src/autogt/cli/service_bridge.py`
+  **→ Reference**: contracts/cli.md output format specifications
+  **→ Functions**: format_analysis_output(), handle_service_errors(), validate_cli_inputs()
+  **→ Output Formats**: Convert service responses to CLI format (JSON/table/YAML)
+  **→ Error Mapping**: Map service exceptions to CLI exit codes
+- [x] T048 Async CLI operations handler in `src/autogt/cli/async_handler.py`
+  **→ Reference**: plan.md lines 75 (performance constraints <5min full model)
+  **→ Features**: Background task execution, progress bars, interrupt handling
+  **→ Resume**: Capability for interrupted analyses
+  **→ Integration**: Used by analysis create/show commands for workflow execution
 
 ## Dependencies
 
 **Critical Dependency Chain**:
 
 - Setup (T001-T003) before all others
-- Contract tests (T004-T022) before implementation (T023-T045)
+- Contract tests (T004-T022) before implementation (T023-T048)
 - Models (T023-T031) before services (T032-T036)
+- AutoGen core (T032) before specialized agents (T032a-T032b)
+- TARA agents (T032a) before step implementations (T034a-T034h)
+- Step implementations before state machine (T034)
 - Services before CLI (T037-T042)
-- Core implementation before integration (T043-T045)
+- Core implementation before integration (T043-T048)
 
 **Blocking Dependencies**:
 
 - T023-T031 block T032-T036 (models before services)
-- T032 blocks T034 (AutoGen setup before TARA processor)
+- T032 blocks T032a (core AutoGen before agents)
+- T032a blocks T034a-T034h (agents before step implementations)
+- T034a-T034h block T034 (step implementations before state machine)
+- T034 blocks T047 (TARA processor before CLI integration)
 - T035 blocks T043 (database service before migrations)
 - T037 blocks T038-T042 (main CLI before command groups)
+- T038-T042 need T047 (CLI commands need service bridge)
 
 ## Parallel Example
 
