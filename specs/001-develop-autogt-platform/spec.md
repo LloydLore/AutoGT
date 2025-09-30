@@ -44,11 +44,6 @@
 - Q: For file upload security validation (FR-14), what are the size limits? → A: 10MB (small datasets, fast processing)
 - Q: What are the expected performance targets for TARA analysis processing? → A: Single asset <10s, Full model <5min, Batch >100/min
 - Q: What user authentication method should the TARA platform support? → A: No authentication (open access system)
-- Q: In the AI-powered asset analysis process, what level of automation should the AutoGen system provide? → A: Fully automated analysis with AI making all asset identification decisions
-- Q: What data sources should the AI system use for asset identification decisions? → A: Project documentation and user-provided configuration files
-- Q: How should the AutoGen system process and structure the asset identification results? → A: Output structured data matching ISO/SAE 21434 asset definition requirements
-- Q: When AI encounters ambiguous or incomplete input data, how should the system respond? → A: Flag uncertain assets for manual review while proceeding with confident identifications
-- Q: What confidence threshold and quality metrics should determine confident vs uncertain asset identifications? → A: Multi-factor scoring based on data completeness, model confidence, and validation checks
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -82,20 +77,16 @@ As a cybersecurity analyst working on automotive systems, I need to perform comp
 - **FR-005**: System MUST generate structured JSON output containing complete TARA analysis results
 - **FR-006**: System MUST generate formatted Excel spreadsheet output based on JSON analysis results
 - **FR-007**: System MUST persist analysis progress to allow resumption of incomplete assessments
-- **FR-008**: System MUST use AI-powered AutoGen capabilities to automatically identify and define assets from input data without requiring user confirmation
-- **FR-009**: System MUST use project documentation and user-provided configuration files as primary data sources for AI asset identification decisions
-- **FR-010**: System MUST generate AI asset identification results as structured data matching ISO/SAE 21434 asset definition requirements
-- **FR-011**: System MUST flag uncertain or ambiguous assets for manual review while proceeding with confident asset identifications
-- **FR-012**: System MUST use multi-factor scoring based on data completeness, model confidence, and validation checks to determine asset identification confidence levels
-- **FR-013**: System MUST validate AI-identified asset definitions for completeness and ISO/SAE 21434 compliance
-- **FR-014**: System MUST provide threat scenario templates and patterns relevant to automotive cybersecurity
-- **FR-015**: System MUST calculate risk values using standardized automotive risk assessment methodologies
-- **FR-016**: System MUST track relationships between assets, threats, attack paths, and mitigation measures
-- **FR-017**: System MUST support single active TARA analysis session per user (no concurrent sessions allowed per user)
-- **FR-018**: System MUST maintain audit trail of all analysis decisions and modifications with 3-year retention period and role-based access controls
-- **FR-019**: System MUST validate file uploads for security threats with 10MB size limit and malware scanning
-- **FR-020**: System MUST meet performance targets: single asset analysis <10 seconds, full vehicle model <5 minutes, batch processing >100 assets/minute
-- **FR-021**: System MUST provide open access with no user authentication required
+- **FR-008**: System MUST validate asset definitions for completeness and ISO/SAE 21434 compliance
+- **FR-009**: System MUST provide threat scenario templates and patterns relevant to automotive cybersecurity
+- **FR-010**: System MUST calculate risk values using standardized automotive risk assessment methodologies
+- **FR-011**: System MUST track relationships between assets, threats, attack paths, and mitigation measures
+- **FR-012**: System MUST support single active TARA analysis session per user (no concurrent sessions allowed per user)
+- **FR-013**: System MUST maintain audit trail of all analysis decisions and modifications with 3-year retention period and role-based access controls
+- **FR-014**: System MUST validate file uploads for security threats with 10MB size limit and malware scanning
+- **FR-015**: System MUST meet performance targets: single asset analysis <10 seconds, full vehicle model <5 minutes, batch processing >100 assets/minute
+- **FR-016**: System MUST provide open access with no user authentication required
+- **FR-016**: System MUST provide open access with no user authentication required
 
 ### Key Entities *(include if feature involves data)*
 

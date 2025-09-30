@@ -4,7 +4,6 @@ Auto-generated from all feature plans. Last updated: 2025-09-29
 
 ## Active Technologies
 - Python 3.12+ (using uv for dependency management) + AutoGen (Microsoft), Google Gemini API, SQLAlchemy (database ORM), FastAPI (CLI/API), pandas (data processing) (001-develop-autogt-platform)
-- SQLite database for TARA analysis persistence with structured JSON export capability (001-develop-autogt-platform)
 
 ## Project Structure
 ```
@@ -20,7 +19,6 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.12+ (using uv for dependency management): Follow standard conventions
 
 ## Recent Changes
-- 001-develop-autogt-platform: Added Python 3.12+ (using uv for dependency management) + AutoGen (Microsoft), Google Gemini API, SQLAlchemy (database ORM), FastAPI (CLI/API), pandas (data processing)
 - 001-develop-autogt-platform: Added Python 3.12+ (using uv for dependency management) + AutoGen (Microsoft), Google Gemini API, SQLAlchemy (database ORM), FastAPI (CLI/API), pandas (data processing)
 
 <!-- MANUAL ADDITIONS START -->

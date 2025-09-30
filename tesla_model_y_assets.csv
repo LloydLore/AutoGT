@@ -1,4 +1,0 @@
-Asset Name,Asset Type,Criticality Level,Interfaces,Description
-Audio System,SOFTWARE,MEDIUM,"Bluetooth,USB,AUX",Tesla Model Y infotainment audio system for media playback
-GPS Module,HARDWARE,HIGH,"Cellular,GPS,WiFi",Tesla Model Y navigation system with location services
-Battery Management System,HARDWARE,VERY_HIGH,"CAN,Ethernet",Tesla Model Y powertrain battery control and monitoring system
