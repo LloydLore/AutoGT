@@ -10,13 +10,30 @@ import sys
 from pathlib import Path
 from typing import Optional, Any
 
-from ..lib.config import Config, ConfigError
-from ..lib.exceptions import AutoGTError
-from .commands import analysis, assets, threats, risks, export as export_cmd
+from .formatters import get_formatter
+from .commands.analysis import analysis_group
+from .commands.assets import assets_group
+from .commands.threats import threats_group
+from .commands.risks import risks_group
+from .commands.export import export_command
 
 
 # Version information
 __version__ = "1.0.0"
+
+# Temporary classes until full implementation
+class AutoGTError(Exception):
+    """Temporary AutoGT error class."""
+    pass
+
+class ConfigError(Exception):
+    """Temporary config error class."""
+    pass
+
+class Config:
+    """Temporary config class."""
+    def __init__(self, config_file=None):
+        self.config_file = config_file
 
 
 def setup_logging(verbose: bool = False) -> None:
@@ -175,6 +192,11 @@ class AutoGTGroup(click.Group):
     help='Enable verbose output'
 )
 @click.option(
+    '--quiet', '-q',
+    is_flag=True,
+    help='Suppress non-error output'
+)
+@click.option(
     '--format', '-f',
     'output_format',
     type=click.Choice(['json', 'yaml', 'table'], case_sensitive=False),
@@ -186,7 +208,8 @@ class AutoGTGroup(click.Group):
 def cli(
     ctx: click.Context, 
     config: Optional[str], 
-    verbose: bool, 
+    verbose: bool,
+    quiet: bool,
     output_format: str
 ) -> None:
     """AutoGT TARA Platform - Automotive Cybersecurity Threat Analysis and Risk Assessment.
@@ -224,7 +247,8 @@ def cli(
     # Store global options in context
     ctx.obj['config'] = config
     ctx.obj['verbose'] = verbose
-    ctx.obj['output_format'] = output_format
+    ctx.obj['quiet'] = quiet
+    ctx.obj['format'] = output_format
     ctx.obj['format_output'] = format_output
     
     # Load configuration
@@ -248,12 +272,11 @@ def cli(
 
 
 # Register command groups
-cli.add_command(analysis.analysis)
-cli.add_command(assets.assets)
-cli.add_command(threats.threats) 
-cli.add_command(risks.risks)
-cli.add_command(export_cmd.export)
-cli.add_command(export_cmd.validate)
+cli.add_command(analysis_group)
+cli.add_command(assets_group)
+cli.add_command(threats_group) 
+cli.add_command(risks_group)
+cli.add_command(export_command)
 
 
 def main() -> None:

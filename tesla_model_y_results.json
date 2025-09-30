@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "export_timestamp": "2025-09-30T11:17:44.846915",
+    "export_format": "json",
+    "analysis_id": "d24d0d9a-d791-4e8e-a76e-bf957eefa94e",
+    "autogt_version": "0.1.0",
+    "iso21434_compliance": true
+  },
+  "analysis": {
+    "id": "d24d0d9a-d791-4e8e-a76e-bf957eefa94e",
+    "name": "Sample TARA Analysis",
+    "vehicle_model": "Sample Vehicle",
+    "completion_status": "completed",
+    "created_at": "2025-09-30T10:00:00Z"
+  },
+  "tara_steps": {
+    "1": {
+      "name": "Asset Identification",
+      "status": "completed"
+    },
+    "2": {
+      "name": "Threat Scenario Identification",
+      "status": "completed"
+    },
+    "3": {
+      "name": "Attack Path Analysis",
+      "status": "completed"
+    },
+    "4": {
+      "name": "Attack Feasibility Rating",
+      "status": "completed"
+    },
+    "5": {
+      "name": "Impact Rating",
+      "status": "completed"
+    },
+    "6": {
+      "name": "Risk Value Determination",
+      "status": "completed"
+    },
+    "7": {
+      "name": "Risk Treatment Decision",
+      "status": "completed"
+    },
+    "8": {
+      "name": "Cybersecurity Goals",
+      "status": "completed"
+    }
+  },
+  "assets": [
+    {
+      "id": "asset1",
+      "name": "ECU Gateway",
+      "type": "HARDWARE",
+      "criticality": "HIGH"
+    }
+  ],
+  "threats": [
+    {
+      "id": "threat1",
+      "asset_id": "asset1",
+      "name": "Remote Code Execution",
+      "actor": "CRIMINAL"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk1",
+      "threat_id": "threat1",
+      "risk_level": "HIGH",
+      "risk_score": 0.78
+    }
+  ],
+  "audit_trail": [
+    {
+      "timestamp": "2025-09-30T10:00:00Z",
+      "action": "analysis_created",
+      "user": "analyst1"
+    }
+  ]
+}

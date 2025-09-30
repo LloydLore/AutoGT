@@ -1,0 +1,168 @@
+[
+  {
+    "id": "a490f867-640b-47e7-9bea-5a074bc71a2f",
+    "name": "Head Unit",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "CAN",
+      "USB",
+      "Bluetooth",
+      "WiFi"
+    ],
+    "description": "Central processing unit for infotainment system managing media, navigation and connectivity",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "99ab3055-9691-45c9-bf56-745f975d7d65",
+    "name": "Navigation Module",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "GPS",
+      "CAN",
+      "Cellular"
+    ],
+    "description": "GPS navigation software with map data and route calculation capabilities",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "a39fdb57-b84b-4bdf-92f4-14b6326923ab",
+    "name": "Media Player",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "USB",
+      "Bluetooth",
+      "SD Card"
+    ],
+    "description": "Audio/video playback system supporting multiple media formats",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "2505377f-de2b-4072-99e8-926f85cdb5c2",
+    "name": "Bluetooth Controller",
+    "asset_type": "HARDWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Bluetooth",
+      "CAN"
+    ],
+    "description": "Wireless communication module for phone connectivity and audio streaming",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "8edb0046-94fd-4cd3-a15c-2e3d4d158a74",
+    "name": "Display Screen",
+    "asset_type": "HARDWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "LVDS",
+      "CAN"
+    ],
+    "description": "Touchscreen display unit for user interface and visual feedback",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "5d784462-2f45-436d-9257-278c390fc93c",
+    "name": "Audio Amplifier",
+    "asset_type": "HARDWARE",
+    "criticality_level": "LOW",
+    "interfaces": [
+      "Analog Audio",
+      "CAN"
+    ],
+    "description": "Power amplifier for speaker system with digital signal processing",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "d9356672-c135-4322-8cfd-10c24af3ca17",
+    "name": "Microphone Array",
+    "asset_type": "HARDWARE",
+    "criticality_level": "LOW",
+    "interfaces": [
+      "Analog Audio",
+      "CAN"
+    ],
+    "description": "Voice input system for hands-free calling and voice commands",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "442a6e9b-e239-4294-b9e6-d8f4b44dc902",
+    "name": "WiFi Hotspot Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "WiFi",
+      "Cellular",
+      "CAN"
+    ],
+    "description": "Internet connectivity module providing vehicle WiFi access point",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "71e3d935-2792-4737-93ae-b104dee4918f",
+    "name": "Android Auto Interface",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "USB",
+      "CAN"
+    ],
+    "description": "Integration software for Android device connectivity and mirroring",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "4864b47e-32a7-4ef2-a82a-bfd4d35d790c",
+    "name": "Apple CarPlay Interface",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "USB",
+      "Lightning",
+      "CAN"
+    ],
+    "description": "Integration software for iOS device connectivity and mirroring",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  }
+]

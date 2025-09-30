@@ -67,6 +67,21 @@ class AuditMixin:
     )
 
 
+class ISO21434Mixin:
+    """Mixin for ISO/SAE 21434 compliance tracking."""
+    
+    iso_section: Mapped[str] = mapped_column(
+        String(100),
+        nullable=True,
+        comment="ISO/SAE 21434 section reference"
+    )
+    compliance_notes: Mapped[str] = mapped_column(
+        String(500),
+        nullable=True,
+        comment="Additional compliance documentation"
+    )
+
+
 class BaseModel(Base, AuditMixin):
     """Base model with UUID primary key and audit fields."""
     

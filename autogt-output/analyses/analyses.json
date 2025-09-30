@@ -1,0 +1,22 @@
+[
+  {
+    "analysis_id": "9d0feacf-f3dc-4905-858a-4e3bc3544068",
+    "analysis_name": "Tesla Model Y TARA",
+    "status": "in_progress",
+    "current_step": 1,
+    "input_file": "tesla_model_y_assets.csv",
+    "vehicle_model": "Tesla Model Y",
+    "created_at": "2025-09-30T11:56:59.819130",
+    "updated_at": "2025-09-30T11:56:59.819140"
+  },
+  {
+    "analysis_id": "24b32546-6e64-4a42-ba7e-828052ab6151",
+    "analysis_name": "VW Touran Infotainment TARA",
+    "status": "in_progress",
+    "current_step": 1,
+    "input_file": "vw_touran_infotainment.csv",
+    "vehicle_model": "VW Touran",
+    "created_at": "2025-09-30T11:57:06.709094",
+    "updated_at": "2025-09-30T11:57:06.709117"
+  }
+]

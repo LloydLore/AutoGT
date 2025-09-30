@@ -1,39 +1,39 @@
-"""Data models for AutoGT TARA platform."""
+"""AutoGT data models package.
 
-# Import base first
-from .base import Base, BaseModel, AuditMixin, GUID
+Contains SQLAlchemy models for TARA (Threat Analysis and Risk Assessment) data.
+Per data-model.md specification with complete entity relationships.
+"""
 
-# Import all models
-from .analysis import TaraAnalysis, AnalysisPhase, CompletionStatus
-from .asset import Asset, AssetType, CriticalityLevel
-from .threat import ThreatScenario, ThreatActor
-from .attack_path import AttackPath
-from .attack_feasibility import (
-    AttackFeasibility, ElapsedTime, SpecialistExpertise, 
-    KnowledgeOfTarget, WindowOfOpportunity, EquipmentRequired
-)
-from .impact import (
-    ImpactRating, SafetyImpact, FinancialImpact, 
-    OperationalImpact, PrivacyImpact
-)
-from .risk import RiskValue, RiskLevel
-from .treatment import RiskTreatment, TreatmentDecision, ResidualRiskLevel
-from .goal import CybersecurityGoal, ProtectionLevel, ImplementationPhase
+# Database infrastructure
+from .database import Base, SessionLocal, get_db, init_db, reset_db
 
-# Export all models and enums
+# Base classes and enumerations
+from .base import BaseModel, ISO21434Mixin
+from .enums import *
+
+# Entity models per data-model.md specification
+from .tara_analysis import TaraAnalysis
+from .asset import Asset
+from .threat_scenario import ThreatScenario
+from .security_control import SecurityControl
+from .impact_rating import ImpactRating
+from .risk_value import RiskValue
+
 __all__ = [
+    # Database infrastructure
+    "Base", "SessionLocal", "get_db", "init_db", "reset_db",
+    
     # Base classes
-    "Base", "BaseModel", "AuditMixin", "GUID",
+    "BaseModel", "ISO21434Mixin",
     
-    # Models
-    "TaraAnalysis", "Asset", "ThreatScenario", "AttackPath", 
-    "AttackFeasibility", "ImpactRating", "RiskValue", 
-    "RiskTreatment", "CybersecurityGoal",
+    # Entity models
+    "TaraAnalysis", "Asset", "ThreatScenario", 
+    "SecurityControl", "ImpactRating", "RiskValue",
     
-    # Enums
-    "AnalysisPhase", "CompletionStatus", "AssetType", "CriticalityLevel",
-    "ThreatActor", "ElapsedTime", "SpecialistExpertise", "KnowledgeOfTarget", 
-    "WindowOfOpportunity", "EquipmentRequired", "SafetyImpact", "FinancialImpact",
-    "OperationalImpact", "PrivacyImpact", "RiskLevel", "TreatmentDecision", 
-    "ResidualRiskLevel", "ProtectionLevel", "ImplementationPhase"
+    # Enumerations exported via *
+    "AssetType", "CriticalityLevel", "ThreatCategory", "AttackVector", 
+    "AttackComplexity", "ControlType", "ControlEffectiveness", 
+    "ImplementationStatus", "ImpactCategory", "ImpactSeverity", 
+    "ConfidenceLevel", "RiskLevel", "RiskStatus", "AnalysisStatus", 
+    "ReviewStatus", "WorkflowState", "ValidationLevel"
 ]

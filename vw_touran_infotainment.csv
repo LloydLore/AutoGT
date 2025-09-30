@@ -1,0 +1,11 @@
+Asset Name,Asset Type,Criticality Level,Interfaces,Description
+Head Unit,HARDWARE,HIGH,"CAN, USB, Bluetooth, WiFi","Central processing unit for infotainment system managing media, navigation and connectivity"
+Navigation Module,SOFTWARE,HIGH,"GPS, CAN, Cellular","GPS navigation software with map data and route calculation capabilities"
+Media Player,SOFTWARE,MEDIUM,"USB, Bluetooth, SD Card","Audio/video playback system supporting multiple media formats"
+Bluetooth Controller,HARDWARE,MEDIUM,"Bluetooth, CAN","Wireless communication module for phone connectivity and audio streaming"
+Display Screen,HARDWARE,MEDIUM,"LVDS, CAN","Touchscreen display unit for user interface and visual feedback"
+Audio Amplifier,HARDWARE,LOW,"Analog Audio, CAN","Power amplifier for speaker system with digital signal processing"
+Microphone Array,HARDWARE,LOW,"Analog Audio, CAN","Voice input system for hands-free calling and voice commands"
+WiFi Hotspot Module,HARDWARE,HIGH,"WiFi, Cellular, CAN","Internet connectivity module providing vehicle WiFi access point"
+Android Auto Interface,SOFTWARE,HIGH,"USB, CAN","Integration software for Android device connectivity and mirroring"
+Apple CarPlay Interface,SOFTWARE,HIGH,"USB, Lightning, CAN","Integration software for iOS device connectivity and mirroring"

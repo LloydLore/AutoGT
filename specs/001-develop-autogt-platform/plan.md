@@ -1,7 +1,7 @@
 
 # Implementation Plan: AutoGT TARA Platform
 
-**Branch**: `001-develop-autogt-platform` | **Date**: 2025-09-29 | **Spec**: [spec.md](./spec.md)
+**Branch**: `001-develop-autogt-platform` | **Date**: 2025-09-29 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/001-develop-autogt-platform/spec.md`
 
 ## Execution Flow (/plan command scope)
@@ -34,50 +34,21 @@
 
 ## Summary
 
-AutoGT TARA Platform automates the 8-step TARA (Threat Analysis and Risk Assessment) process for automotive cybersecurity according to ISO/SAE 21434 standards. The platform accepts multi-format inputs (Excel, CSV, JSON, text), processes them through AI-driven TARA workflows using AutoGen with Google Gemini API, and outputs structured JSON data and Excel spreadsheets. Technical approach uses Python for processing, database for persistence, and CLI-first architecture for automation integration.
-
-## Implementation Roadmap
-
-### 📋 Phase Status & File References
-
-**✅ Completed Phases**:
-
-- **Research** → [research.md](./research.md) - AutoGen 0.7.4 patterns, Gemini API setup
-- **Design** → [data-model.md](./data-model.md) - 6 SQLAlchemy entities with relationships  
-- **Contracts** → [contracts/api.yaml](./contracts/api.yaml) + [contracts/cli.md](./contracts/cli.md)
-- **Integration Scenarios** → [quickstart.md](./quickstart.md) - Complete workflow examples
-
-**🔄 Next Phase**:
-
-- **Task Generation** → Run /tasks command → Creates `tasks.md` (35-40 ordered tasks)
-
-**❌ Missing (Critical for Task Generation)**:
-
-- **Contract Tests** → See "Missing Contract Tests Required" section below
-- **Directory Structure** → Create `src/autogt/`, `tests/`, `database/` dirs
-
-### 🎯 Implementation Entry Points
-
-When implementing, start with these specific files and line references:
-
-1. **AutoGen Setup** → research.md lines 63-73 (Gemini client pattern)
-2. **Data Models** → data-model.md lines 5-271 (6 entities, validation rules)  
-3. **API Endpoints** → contracts/api.yaml lines 11-397 (OpenAPI specification)
-4. **CLI Commands** → contracts/cli.md lines 15-398 (8 commands with options)
-5. **Integration Tests** → quickstart.md lines 45-417 (Complete TARA workflow)
-6. **Performance Targets** → Technical Context lines 47-48 (<10s, <5min, >100/min)
+AutoGT TARA Platform automates the 8-step ISO/SAE 21434 automotive cybersecurity Threat Assessment and Risk Analysis (TARA) process. Primary requirement: Accept multi-format input files (Excel, CSV, JSON, text) and generate structured JSON/Excel outputs containing complete TARA analysis results. Technical approach: Python CLI-first architecture with AI-powered AutoGen capabilities for automated asset identification, SQLAlchemy data persistence, and FastAPI integration for structured I/O processing.
 
 ## Technical Context
 
 **Language/Version**: Python 3.12+ (using uv for dependency management)  
 **Primary Dependencies**: AutoGen (Microsoft), Google Gemini API, SQLAlchemy (database ORM), FastAPI (CLI/API), pandas (data processing)  
-**Storage**: SQLite for development, PostgreSQL for production, file storage for uploads  
-**Testing**: pytest, pytest-asyncio, contract testing with OpenAPI validation  
-**Target Platform**: Linux server (primary), cross-platform CLI support  
-**Project Type**: single (CLI-first with optional web interface)  
-**Performance Goals**: Single asset <10s, Full model <5min, Batch >100/min (per spec clarifications)  
-**Constraints**: 10MB file upload limit, 3-year audit retention, <2GB memory for standard models  
-**Scale/Scope**: Single-user sessions, automotive industry compliance, ISO/SAE 21434 traceability
+**Storage**: SQLite database for TARA analysis persistence with structured JSON export capability  
+**Testing**: pytest with comprehensive test coverage for TARA algorithms, edge cases, and security boundaries  
+**Target Platform**: Linux/macOS/Windows CLI with cross-platform Python compatibility
+**Project Type**: Single project (CLI-first architecture with optional API exposure)  
+**Performance Goals**: Single asset analysis <10 seconds, Full vehicle model <5 minutes, Batch processing >100 assets/minute  
+**Constraints**: Memory usage <2GB for standard vehicle models, 10MB file upload limit, offline-capable processing  
+**Scale/Scope**: Automotive cybersecurity analysis workflows, ISO/SAE 21434 compliance, enterprise TARA automation
+
+**User-Provided Context**: Proceed with planning based on clarified AI automation requirements - fully automated asset identification using project documentation and configuration files as data sources, with multi-factor confidence scoring and manual review flagging for uncertain identifications.
 
 ## Constitution Check
 
@@ -85,38 +56,38 @@ When implementing, start with these specific files and line references:
 
 ### I. ISO/SAE 21434 Compliance Gate
 
-- [x] Feature includes explicit traceability to relevant ISO/SAE 21434 sections
-- [x] Threat model documented with clear attack vectors and impact analysis
-- [x] Risk assessment methodology specified and compliant with automotive standards
-- [x] All compliance artifacts are machine-readable and auditable
+- [x] Feature includes explicit traceability to relevant ISO/SAE 21434 sections (8-step TARA process per FR-003)
+- [x] Threat model documented with clear attack vectors and impact analysis (FR-004: threat scenario identification)
+- [x] Risk assessment methodology specified and compliant with automotive standards (FR-015: standardized automotive risk assessment)
+- [x] All compliance artifacts are machine-readable and auditable (FR-005: structured JSON output, FR-016: audit trail)
 
 ### II. Test-First Development Gate
 
-- [x] TDD approach explicitly planned (tests → approval → failure → implementation)
-- [x] Test coverage plan includes edge cases, invalid inputs, security boundaries
-- [x] Contract tests identified for all data exchange formats and API interfaces
-- [x] No implementation tasks scheduled before corresponding test tasks
+- [x] TDD approach explicitly planned (tests → approval → failure → implementation per constitution)
+- [x] Test coverage plan includes edge cases, invalid inputs, security boundaries (FR-002: input validation, FR-017: file security validation)
+- [x] Contract tests identified for all data exchange formats and API interfaces (multi-format I/O per FR-001)
+- [x] No implementation tasks scheduled before corresponding test tasks (constitution requirement)
 
 ### III. CLI-First Architecture Gate
 
-- [x] All TARA functions expose CLI interfaces with text-based I/O
-- [x] Input/output formats support both JSON and human-readable modes
-- [x] Processing pipelines designed for Unix pipe composition
-- [x] Stdin/args → stdout protocol clearly defined
+- [x] All TARA functions expose CLI interfaces with text-based I/O (CLI-first architecture requirement)
+- [x] Input/output formats support both JSON and human-readable modes (FR-005: JSON output, FR-006: Excel output)
+- [x] Processing pipelines designed for Unix pipe composition (CLI design per constitution)
+- [x] Stdin/args → stdout protocol clearly defined (structured I/O per feature requirements)
 
 ### IV. Performance Standards Gate
 
-- [x] Performance targets specified: Single analysis <10s, Full model <5min, Batch >100/min
-- [x] Memory constraints defined: Standard vehicle models <2GB
-- [x] Benchmark datasets identified for realistic testing
-- [x] Performance regression testing planned in CI/CD
+- [x] Performance targets specified: Single analysis <10s, Full model <5min, Batch >100/min (FR-018: performance targets)
+- [x] Memory constraints defined: Standard vehicle models <2GB (constitution requirement)
+- [x] Benchmark datasets identified for realistic testing (automotive vehicle models)
+- [x] Performance regression testing planned in CI/CD (constitution requirement)
 
 ### V. Code Quality Gate
 
-- [x] Domain-specific naming conventions planned (threats, assets, attack_paths, risk_levels)
-- [x] Public API documentation strategy includes examples
-- [x] Complexity justification approach defined
-- [x] Static analysis and type hinting requirements specified
+- [x] Domain-specific naming conventions planned (threats, assets, attack_paths, risk_levels per constitution)
+- [x] Public API documentation strategy includes examples (constitution requirement)
+- [x] Complexity justification approach defined (constitution adherence)
+- [x] Static analysis and type hinting requirements specified (Python 3.12+ type hints)
 
 ## Project Structure
 
@@ -136,123 +107,82 @@ specs/[###-feature]/
 
 ```
 src/autogt/
-├── models/              # Data models for TARA entities
-│   ├── __init__.py
-│   ├── asset.py
-│   ├── threat.py
-│   ├── risk.py
-│   └── analysis.py
-├── services/            # Business logic for TARA processing
-│   ├── __init__.py
-│   ├── tara_processor.py
-│   ├── file_handler.py
-│   └── autogen_agent.py
-├── cli/                 # CLI interface
-│   ├── __init__.py
-│   ├── main.py
-│   └── commands/
-└── lib/                 # Shared utilities
-    ├── __init__.py
-    ├── validators.py
-    └── formatters.py
+├── models/              # TARA data models (Asset, ThreatScenario, RiskAssessment, etc.)
+├── services/            # TARA business logic (analysis engine, AI integration)
+├── cli/                 # Command-line interface and commands
+├── ai/                  # AutoGen integration for AI-powered asset identification
+├── io/                  # Input/output handlers (Excel, CSV, JSON parsers/exporters)
+└── core/               # Core TARA algorithms and ISO/SAE 21434 compliance
 
 tests/
-├── contract/            # API/interface contract tests
-├── integration/         # End-to-end workflow tests
-└── unit/               # Individual component tests
+├── contract/           # API contract tests for I/O formats and data exchange
+├── integration/        # End-to-end TARA workflow tests
+└── unit/              # Individual component tests (models, services, algorithms)
 
-database/
-├── migrations/         # Database schema migrations
-└── seeds/             # Test data and examples
-
-docs/
-├── api/               # API documentation
-└── examples/          # Usage examples and tutorials
+data/
+├── templates/         # TARA templates and threat scenario patterns
+├── schemas/           # JSON schemas for validation and compliance
+└── examples/          # Sample input files and expected outputs
 ```
 
-**Structure Decision**: Single Python project with CLI-first architecture. Using src/autogt layout for clean imports and packaging. AutoGen agents will be services that orchestrate TARA workflows. Database migrations support both SQLite (dev) and PostgreSQL (prod).
+**Structure Decision**: Single project CLI-first architecture selected. The existing `src/autogt/` structure aligns with TARA domain requirements, supporting modular organization of cybersecurity analysis components while maintaining clean separation between data models, business logic, and user interface layers.
 
 ## Phase 0: Outline & Research
 
-✅ **Status**: COMPLETED - See [research.md](./research.md)
-
 1. **Extract unknowns from Technical Context** above:
-   - ✅ AutoGen 0.7.4 version-specific integration patterns → **See research.md Section 1**
-   - ✅ Google Gemini API authentication and model configuration → **See research.md Section 2**  
-   - ✅ Multi-agent orchestration patterns for 8-step TARA workflow → **See research.md Section 3-4**
-   - ✅ Performance optimization strategies for constitutional requirements → **See research.md Section 3**
+   - For each NEEDS CLARIFICATION → research task
+   - For each dependency → best practices task
+   - For each integration → patterns task
 
-2. **Key Research Findings Applied**:
-   - **AutoGen Integration**: Use `RoundRobinGroupChat` for sequential 8-step processing
-   - **Gemini Setup**: OpenAI-compatible client with base_url configuration
-   - **Context Management**: `BufferedChatCompletionContext` for memory optimization
-   - **Tool Architecture**: `FunctionTool` pattern for custom TARA analysis functions
+2. **Generate and dispatch research agents**:
 
-3. **Remaining Research Areas**: Medium/Low priority items in research.md sections 4-6
+   ```
+   For each unknown in Technical Context:
+     Task: "Research {unknown} for {feature context}"
+   For each technology choice:
+     Task: "Find best practices for {tech} in {domain}"
+   ```
 
-**Output**: research.md with all critical unknowns resolved, implementation patterns identified
+3. **Consolidate findings** in `research.md` using format:
+   - Decision: [what was chosen]
+   - Rationale: [why chosen]
+   - Alternatives considered: [what else evaluated]
+
+**Output**: research.md with all NEEDS CLARIFICATION resolved
 
 ## Phase 1: Design & Contracts
 
-✅ **Status**: COMPLETED - See design artifacts below
-
 *Prerequisites: research.md complete*
 
-1. **✅ Extract entities from feature spec** → **See [data-model.md](./data-model.md)**:
-   - Core entities: Asset, ThreatScenario, AttackPath, AttackFeasibility, RiskValue, TaraAnalysis
-   - SQLAlchemy models with validation rules
-   - ISO/SAE 21434 traceability fields
-   - Full relationship mapping for 8-step TARA workflow
+1. **Extract entities from feature spec** → `data-model.md`:
+   - Entity name, fields, relationships
+   - Validation rules from requirements
+   - State transitions if applicable
 
-2. **✅ Generate API contracts** from functional requirements → **See [contracts/](./contracts/)**:
-   - **REST API**: [contracts/api.yaml](./contracts/api.yaml) - OpenAPI 3.0 specification
-   - **CLI Interface**: [contracts/cli.md](./contracts/cli.md) - Command structure and options
-   - File upload validation (10MB limit), multi-format support
-   - JSON/Excel output contracts with ISO compliance
+2. **Generate API contracts** from functional requirements:
+   - For each user action → endpoint
+   - Use standard REST/GraphQL patterns
+   - Output OpenAPI/GraphQL schema to `/contracts/`
 
-3. **🔄 Generate contract tests** from contracts:
-   - **MISSING**: Contract test files need to be created from api.yaml and cli.md
-   - **REQUIRED**: pytest fixtures for API endpoint testing
-   - **REQUIRED**: CLI command validation tests
-   - **CRITICAL**: Tests must fail initially (TDD approach)
+3. **Generate contract tests** from contracts:
+   - One test file per endpoint
+   - Assert request/response schemas
+   - Tests must fail (no implementation yet)
 
-4. **✅ Extract test scenarios** from user stories → **See [quickstart.md](./quickstart.md)**:
-   - Complete 8-step TARA workflow example
-   - Integration test scenarios from vehicle-system.csv input
-   - Performance validation steps (<10s single asset)
-   - JSON and Excel output validation
+4. **Extract test scenarios** from user stories:
+   - Each story → integration test scenario
+   - Quickstart test = story validation steps
 
-5. **✅ Update agent file**: [.github/copilot-instructions.md](./.github/copilot-instructions.md) updated
+5. **Update agent file incrementally** (O(1) operation):
+   - Run `.specify/scripts/bash/update-agent-context.sh copilot`
+     **IMPORTANT**: Execute it exactly as specified above. Do not add or remove any arguments.
+   - If exists: Add only NEW tech from current plan
+   - Preserve manual additions between markers
+   - Update recent changes (keep last 3)
+   - Keep under 150 lines for token efficiency
+   - Output to repository root
 
-**Output**: ✅ data-model.md, ✅ /contracts/*, ❌ failing tests (NEEDED), ✅ quickstart.md, ✅ agent file
-
-**⚠️ IMPLEMENTATION GAP**: Contract tests missing - required for Phase 2 task generation
-
-### Missing Contract Tests Required
-
-**API Contract Tests** (from contracts/api.yaml):
-
-- `tests/contract/test_analysis_api.py` - POST /analysis endpoint validation
-- `tests/contract/test_analysis_status_api.py` - GET /analysis/{id}/status validation
-- `tests/contract/test_analysis_results_api.py` - GET /analysis/{id}/results validation
-- `tests/contract/test_file_upload_api.py` - Multipart file upload validation (10MB limit)
-- `tests/contract/test_error_responses_api.py` - 400/404/500 error schema validation
-
-**CLI Contract Tests** (from contracts/cli.md):
-
-- `tests/contract/test_analysis_create_cli.py` - autogt analysis create command
-- `tests/contract/test_analysis_status_cli.py` - autogt analysis status command  
-- `tests/contract/test_analysis_results_cli.py` - autogt analysis results command
-- `tests/contract/test_cli_validation.py` - Input validation and error handling
-- `tests/contract/test_cli_output_formats.py` - JSON/table/yaml output formats
-
-**Integration Tests** (from quickstart.md scenarios):
-
-- `tests/integration/test_complete_tara_workflow.py` - Full 8-step process
-- `tests/integration/test_multi_format_input.py` - Excel/CSV/JSON input validation
-- `tests/integration/test_performance_benchmarks.py` - <10s single asset, <5min full model
-
-**Next Action Required**: Create these test files with failing assertions before Phase 2 task generation
+**Output**: data-model.md, /contracts/*, failing tests, quickstart.md, agent-specific file
 
 ## Phase 2: Task Planning Approach
 
@@ -261,101 +191,33 @@ docs/
 **Task Generation Strategy**:
 
 - Load `.specify/templates/tasks-template.md` as base
-- Generate tasks from Phase 1 design docs with specific references:
+- Generate tasks from Phase 1 design docs (data-model.md, contracts/api.yaml, contracts/cli.md, quickstart.md)
+- Each data model entity → SQLAlchemy model creation task [P]
+- Each API contract endpoint → contract test task [P]
+- Each CLI command → CLI test task [P]
+- AI agent integration tasks for AutoGen + Gemini API
+- File I/O handlers for Excel/CSV/JSON formats
+- Implementation tasks to make tests pass
 
-**From contracts/api.yaml (12 endpoints identified)**:
+**Ordering Strategy**:
 
-- `/analysis` POST → contract test task [P]
-- `/analysis/{id}` GET → contract test task [P]
-- `/analysis/{id}/status` GET → contract test task [P]
-- `/analysis/{id}/results` GET → contract test task [P]
-- (+ 8 more endpoints) → See api.yaml lines 11-280
+- TDD order: Tests before implementation (constitution requirement)
+- Dependency order: Core models → AI services → I/O handlers → CLI commands
+- Database setup and migration tasks before model tasks
+- Mark [P] for parallel execution (independent files)
+- AI integration after core TARA models are established
 
-**From contracts/cli.md (8 commands identified)**:
+**AutoGT-Specific Task Categories**:
 
-- `autogt analysis create` → contract test task [P] → See cli.md lines 15-65
-- `autogt analysis status` → contract test task [P] → See cli.md lines 66-95  
-- `autogt analysis results` → contract test task [P] → See cli.md lines 96-140
-- (+ 5 more commands) → See cli.md lines 141-398
+1. **Database Foundation** (Tasks 1-5): Schema setup, migrations, base models
+2. **Core TARA Models** (Tasks 6-15): Asset, ThreatScenario, RiskValue entities [P]
+3. **AI Integration** (Tasks 16-22): AutoGen agents, Gemini API, confidence scoring
+4. **I/O Processing** (Tasks 23-28): File handlers, validation, export functions [P]
+5. **CLI Interface** (Tasks 29-35): Command structure, argument parsing, output formatting
+6. **Integration Tests** (Tasks 36-40): End-to-end TARA workflow validation
+7. **Performance & Compliance** (Tasks 41-45): Benchmarking, ISO/SAE 21434 verification
 
-**From data-model.md (6 entities identified)**:
-
-- Asset model → creation task [P] → See data-model.md lines 5-45
-- ThreatScenario model → creation task [P] → See data-model.md lines 46-85
-- AttackPath model → creation task [P] → See data-model.md lines 86-125
-- (+ 3 more entities) → See data-model.md lines 126-271
-
-**From research.md (AutoGen integration patterns)**:
-
-- RoundRobinGroupChat setup → implementation task → See research.md lines 21-25
-- Gemini API client → implementation task → See research.md lines 63-73
-- Context management → optimization task → See research.md lines 87-91
-
-**From quickstart.md (integration scenarios)**:
-
-- Complete 8-step workflow test → See quickstart.md lines 45-200
-- Performance validation test → See quickstart.md lines 350-400
-- Multi-format I/O test → See quickstart.md lines 250-300
-
-**Ordering Strategy with Cross-References**:
-
-1. **Setup**: Project structure, dependencies → Use research.md Section 1 AutoGen installation  
-2. **Database Schema**: From data-model.md entities → SQLAlchemy migrations
-3. **Contract Tests**: From contracts/* → pytest test files (TDD first)
-4. **Core Models**: From data-model.md → src/autogt/models/ implementation
-5. **AutoGen Services**: From research.md patterns → src/autogt/services/autogen_agent.py
-6. **TARA Processing**: 8-step workflow → src/autogt/services/tara_processor.py  
-7. **CLI Commands**: From contracts/cli.md → src/autogt/cli/ implementation
-8. **AI Integration**: From research.md Gemini setup → Gemini client configuration
-9. **File Processing**: pandas/openpyxl → src/autogt/services/file_handler.py
-10. **Export Generation**: JSON/Excel → Output formatters
-11. **Integration Tests**: From quickstart.md scenarios
-12. **Performance Tests**: Constitutional requirements validation
-
-**Estimated Output**: 35-40 numbered, ordered tasks focusing on CLI-first architecture with AI-driven TARA processing
-
-**IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
-
-## Implementation Sequence Guide
-
-### For Implementers: Clear Task Sequence
-
-**🎯 Immediate Next Steps** (after reading this plan):
-
-1. **Create Missing Contract Tests** (TDD Requirement):
-
-   ```bash
-   # Create test files from contracts above
-   mkdir -p tests/{contract,integration}
-   # Each test should FAIL initially (no implementation)
-   ```
-
-2. **Run Task Generation**:
-
-   ```bash
-   # Generate ordered tasks from implementation details
-   /tasks command  # Creates tasks.md with 35-40 numbered tasks
-   ```
-
-3. **Follow Constitutional Order**:
-   - Tests First → Models → Services → CLI → Integration
-   - Reference specific files/lines noted in task generation strategy above
-
-**🔍 Implementation Cross-References**:
-
-- **AutoGen Integration**: Follow research.md Section 1 patterns
-- **Data Models**: Implement from data-model.md entities with SQLAlchemy
-- **API Endpoints**: Build from contracts/api.yaml OpenAPI spec  
-- **CLI Commands**: Build from contracts/cli.md command structure
-- **8-Step TARA Logic**: Use quickstart.md workflow as integration test
-- **Performance**: Meet constitutional requirements (<10s, <5min, >100/min)
-
-**🚨 Critical Dependencies**:
-
-- Gemini API key configured (research.md Section 2)
-- AutoGen 0.7.4+ installed (research.md Section 1)
-- Database schema from data-model.md entities
-- Contract tests passing before implementation
+**Estimated Output**: 45-50 numbered, ordered tasks in tasks.md
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
@@ -382,19 +244,19 @@ docs/
 
 **Phase Status**:
 
-- [x] Phase 0: Research complete (/plan command)
-- [x] Phase 1: Design complete (/plan command)
-- [ ] Phase 2: Task planning complete (/plan command - describe approach only)
-- [ ] Phase 3: Tasks generated (/tasks command)
+- [x] Phase 0: Research complete (/plan command) - research.md exists with comprehensive technology decisions
+- [x] Phase 1: Design complete (/plan command) - data-model.md, contracts/, quickstart.md, agent context updated  
+- [x] Phase 2: Task planning complete (/plan command - AutoGT-specific approach documented)
+- [x] Phase 3: Tasks generated (/tasks command) - 90 comprehensive tasks with implementation references
 - [ ] Phase 4: Implementation complete
 - [ ] Phase 5: Validation passed
 
 **Gate Status**:
 
 - [x] Initial Constitution Check: PASS
-- [x] Post-Design Constitution Check: PASS
-- [x] All NEEDS CLARIFICATION resolved
-- [ ] Complexity deviations documented
+- [x] Post-Design Constitution Check: PASS - design artifacts confirm constitutional compliance
+- [x] All NEEDS CLARIFICATION resolved (via clarification session)
+- [x] Complexity deviations documented (none required)
 
 ---
 *Based on Constitution v2.1.1 - See `/memory/constitution.md`*

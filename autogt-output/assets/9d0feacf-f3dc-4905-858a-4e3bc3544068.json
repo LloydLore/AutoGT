@@ -1,0 +1,52 @@
+[
+  {
+    "id": "493179d9-bf81-4ed3-96a1-610af2707860",
+    "name": "Audio System",
+    "asset_type": "SOFTWARE",
+    "criticality_level": "MEDIUM",
+    "interfaces": [
+      "Bluetooth",
+      "USB",
+      "AUX"
+    ],
+    "description": "Tesla Model Y infotainment audio system for media playback",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "7f2aa208-a3e2-45b5-a348-7c9a7d1ecb96",
+    "name": "GPS Module",
+    "asset_type": "HARDWARE",
+    "criticality_level": "HIGH",
+    "interfaces": [
+      "Cellular",
+      "GPS",
+      "WiFi"
+    ],
+    "description": "Tesla Model Y navigation system with location services",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  },
+  {
+    "id": "e6ca414b-f9fa-4cec-aa94-c2f479000fd7",
+    "name": "Battery Management System",
+    "asset_type": "HARDWARE",
+    "criticality_level": "VERY_HIGH",
+    "interfaces": [
+      "CAN",
+      "Ethernet"
+    ],
+    "description": "Tesla Model Y powertrain battery control and monitoring system",
+    "security_properties": {
+      "confidentiality": "MEDIUM",
+      "integrity": "MEDIUM",
+      "availability": "MEDIUM"
+    }
+  }
+]
