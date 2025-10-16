@@ -147,11 +147,18 @@ class AutoGTGroup(click.Group):
     
     def invoke(self, ctx: click.Context) -> Any:
         """Invoke command with error handling."""
+        # Skip custom error handling for help command
+        if '--help' in sys.argv or '-h' in sys.argv:
+            return super().invoke(ctx)
+            
         try:
             return super().invoke(ctx)
         except AutoGTError as e:
             click.echo(f"Error: {e}", err=True)
             sys.exit(1)
+        except SystemExit as e:
+            # Pass through SystemExit unchanged to support --help properly
+            raise
         except Exception as e:
             if ctx.find_root().params.get('verbose'):
                 import traceback
@@ -227,6 +234,12 @@ def cli(
     ctx.obj['output_format'] = output_format
     ctx.obj['format_output'] = format_output
     
+    # If help is requested, skip configuration loading
+    if '--help' in sys.argv or '-h' in sys.argv:
+        # Set a placeholder config instance to avoid errors in subcommands
+        ctx.obj['config_instance'] = None
+        return
+    
     # Load configuration
     try:
         config_instance = Config(config_file=config)
@@ -244,7 +257,7 @@ def cli(
     # If no subcommand is provided, show help
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
-        sys.exit(0)
+        return
 
 
 # Register command groups
