@@ -1,0 +1,520 @@
+@startuml tara_processor_architecture
+
+!define COMPONENT_STYLE rectangle
+
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+
+' ============================================================================
+' PACKAGE VIEW - High-level organization
+' ============================================================================
+
+package "AutoGT TARA System" {
+    
+    package "Services Layer" <<Layer>> {
+        component "TaraProcessor" as PROC
+        component "AutoGenTaraAgent" as AGENT
+        component "DatabaseService" as DB
+        component "FileHandler" as FILE
+    }
+    
+    package "Models Layer" <<Layer>> {
+        component "Domain Models" as MODELS {
+            [TaraAnalysis]
+            [Asset]
+            [ThreatScenario]
+            [AttackPath]
+            [AttackFeasibility]
+            [ImpactRating]
+            [RiskValue]
+            [RiskTreatment]
+            [CybersecurityGoal]
+        }
+        
+        component "Enums" as ENUMS {
+            [AnalysisPhase]
+            [CompletionStatus]
+            [AssetType]
+            [CriticalityLevel]
+            [ThreatActor]
+            [RiskLevel]
+            [TreatmentDecision]
+            [ProtectionLevel]
+        }
+    }
+}
+
+PROC --> AGENT : uses
+PROC --> DB : persists via
+PROC --> FILE : reads via
+PROC ..> MODELS : creates/manages
+MODELS ..> ENUMS : uses
+
+note right of PROC
+  **Main Orchestrator**
+  Implements ISO/SAE 21434
+  8-step TARA workflow
+end note
+
+note bottom of MODELS
+  SQLAlchemy ORM Models
+  ISO/SAE 21434 compliant
+  data structures
+end note
+
+@enduml
+
+' ============================================================================
+' COMPONENT VIEW - Detailed component interactions
+' ============================================================================
+
+@startuml tara_processor_components
+
+!include <C4/C4_Component>
+
+Container_Boundary(tara_system, "TARA Processing System") {
+    
+    Component(processor, "TaraProcessor", "Python Class", "Main orchestrator for 8-step TARA workflow")
+    
+    Component(autogen, "AutoGenTaraAgent", "AI Agent", "Provides AI-powered analysis for each TARA step")
+    
+    Component(database, "DatabaseService", "Data Access", "SQLAlchemy-based persistence layer")
+    
+    Component(filehandler, "FileHandler", "File I/O", "Parses Excel/CSV/JSON input files")
+    
+    ComponentDb(db, "SQLite/PostgreSQL", "Database", "Stores analysis results")
+    
+    Component(config, "TaraProcessorConfig", "Configuration", "Processing parameters and settings")
+}
+
+Rel(processor, autogen, "Uses for AI analysis", "method calls")
+Rel(processor, database, "Persists data via", "session management")
+Rel(processor, filehandler, "Reads input via", "parse_file()")
+Rel(database, db, "Queries/Writes", "SQLAlchemy ORM")
+Rel(processor, config, "Configured by", "initialization")
+
+note right of processor
+  **8 Sequential Steps:**
+  1. Asset Identification
+  2. Threat Scenario Identification
+  3. Attack Path Analysis
+  4. Attack Feasibility Rating
+  5. Impact Rating
+  6. Risk Value Determination
+  7. Risk Treatment Decision
+  8. Cybersecurity Goals
+end note
+
+@enduml
+
+' ============================================================================
+' CLASS VIEW - Detailed class diagram with relationships
+' ============================================================================
+
+@startuml tara_processor_classes
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<Enum>> LightYellow
+    BackgroundColor<<DataClass>> LightBlue
+    BackgroundColor<<Service>> LightGreen
+    BackgroundColor<<Exception>> Pink
+}
+
+' ============================================================================
+' ENUMERATIONS
+' ============================================================================
+
+enum TaraStep <<Enum>> {
+    ASSET_IDENTIFICATION
+    THREAT_SCENARIO_IDENTIFICATION
+    ATTACK_PATH_ANALYSIS
+    ATTACK_FEASIBILITY_RATING
+    IMPACT_RATING
+    RISK_VALUE_DETERMINATION
+    RISK_TREATMENT_DECISION
+    CYBERSECURITY_GOALS
+}
+
+enum CompletionStatus <<Enum>> {
+    IN_PROGRESS
+    COMPLETED
+    FAILED
+}
+
+enum AnalysisPhase <<Enum>> {
+    CONCEPT
+    DEVELOPMENT
+    PRODUCTION
+    OPERATIONS
+}
+
+' ============================================================================
+' DATA CLASSES (Configuration & Results)
+' ============================================================================
+
+class TaraProcessorConfig <<DataClass>> {
+    +batch_size: int = 10
+    +max_retries: int = 3
+    +timeout_seconds: int = 300
+    +enable_parallel_processing: bool = True
+    +save_intermediate_results: bool = True
+    +validation_enabled: bool = True
+    +performance_tracking: bool = True
+}
+
+class StepResult <<DataClass>> {
+    +step: TaraStep
+    +success: bool
+    +execution_time_seconds: float
+    +items_processed: int
+    +items_created: int
+    +error_message: Optional[str]
+    +warnings: List[str]
+    +metadata: Dict[str, Any]
+}
+
+class TaraProcessorResult <<DataClass>> {
+    +analysis_id: str
+    +success: bool
+    +total_execution_time_seconds: float
+    +steps_completed: List[TaraStep]
+    +step_results: List[StepResult]
+    +final_status: CompletionStatus
+    +error_message: Optional[str]
+    +performance_metrics: Dict[str, Any]
+}
+
+' ============================================================================
+' EXCEPTION
+' ============================================================================
+
+class TaraProcessorError <<Exception>> {
+}
+
+Exception <|-- TaraProcessorError
+
+' ============================================================================
+' MAIN SERVICE CLASS
+' ============================================================================
+
+class TaraProcessor <<Service>> {
+    -db_service: DatabaseService
+    -file_handler: FileHandler
+    -autogen_agent: AutoGenTaraAgent
+    -config: TaraProcessorConfig
+    -logger: Logger
+    -step_sequence: List[TaraStep]
+    
+    +__init__(db_service, file_handler, autogen_agent, config)
+    
+    ' Public API
+    +process_analysis(analysis_id: str): TaraProcessorResult
+    +process_analysis_from_file(file_path, analysis_name, vehicle_model): TaraProcessorResult
+    +get_analysis_status(analysis_id: str): Dict[str, Any]
+    
+    ' Private orchestration methods
+    -_execute_step(analysis, step): StepResult
+    -_load_analysis(analysis_id): TaraAnalysis
+    -_create_analysis_from_file_data(...): TaraAnalysis
+    -_update_analysis_progress(analysis, completed_step): None
+    -_finalize_analysis(analysis): None
+    -_calculate_progress_percentage(analysis): int
+    -_calculate_performance_metrics(...): Dict[str, Any]
+    
+    ' Step execution methods (one per TARA step)
+    -_execute_asset_identification(analysis, start_time): StepResult
+    -_execute_threat_identification(analysis, start_time): StepResult
+    -_execute_attack_path_analysis(analysis, start_time): StepResult
+    -_execute_feasibility_rating(analysis, start_time): StepResult
+    -_execute_impact_rating(analysis, start_time): StepResult
+    -_execute_risk_determination(analysis, start_time): StepResult
+    -_execute_risk_treatment(analysis, start_time): StepResult
+    -_execute_cybersecurity_goals(analysis, start_time): StepResult
+}
+
+' ============================================================================
+' EXTERNAL DEPENDENCIES (Simplified)
+' ============================================================================
+
+class DatabaseService <<Service>> {
+    +get_session()
+}
+
+class FileHandler <<Service>> {
+    +parse_file(file_path): Dict[str, Any]
+}
+
+class AutoGenTaraAgent <<Service>> {
+    +analyze_assets(context): Dict[str, Any]
+    +identify_threats(context): Dict[str, Any]
+    +model_attack_paths(context): Dict[str, Any]
+    +assess_feasibility(context): Dict[str, Any]
+    +assess_impact(context): Dict[str, Any]
+    +calculate_risk(context): Dict[str, Any]
+    +plan_treatment(context): Dict[str, Any]
+    +architect_goals(context): Dict[str, Any]
+}
+
+' ============================================================================
+' DOMAIN MODELS (Referenced but not defined in this file)
+' ============================================================================
+
+class TaraAnalysis {
+    +id: UUID
+    +analysis_name: str
+    +vehicle_model: str
+    +analysis_phase: AnalysisPhase
+    +completion_status: CompletionStatus
+    +current_step: str
+    +assets: List[Asset]
+    +cybersecurity_goals: List[CybersecurityGoal]
+    +created_at: datetime
+    +completed_at: Optional[datetime]
+}
+
+class Asset {
+    +id: UUID
+    +analysis_id: UUID
+    +name: str
+    +asset_type: AssetType
+    +criticality_level: CriticalityLevel
+    +threat_scenarios: List[ThreatScenario]
+    +impact_ratings: List[ImpactRating]
+}
+
+class ThreatScenario {
+    +id: UUID
+    +asset_id: UUID
+    +threat_name: str
+    +threat_actor: ThreatActor
+    +attack_paths: List[AttackPath]
+    +risk_values: List[RiskValue]
+}
+
+class AttackPath {
+    +id: UUID
+    +threat_scenario_id: UUID
+    +step_sequence: int
+    +attack_feasibility: AttackFeasibility
+}
+
+class AttackFeasibility {
+    +id: UUID
+    +attack_path_id: UUID
+    +feasibility_score: int
+}
+
+class ImpactRating {
+    +id: UUID
+    +asset_id: UUID
+    +impact_score: int
+}
+
+class RiskValue {
+    +id: UUID
+    +threat_scenario_id: UUID
+    +risk_level: RiskLevel
+    +risk_score: int
+}
+
+class RiskTreatment {
+    +id: UUID
+    +risk_value_id: UUID
+    +treatment_decision: TreatmentDecision
+    +countermeasures: List[str]
+}
+
+class CybersecurityGoal {
+    +id: UUID
+    +analysis_id: UUID
+    +goal_name: str
+    +protection_level: ProtectionLevel
+}
+
+' ============================================================================
+' RELATIONSHIPS
+' ============================================================================
+
+' Composition relationships
+TaraProcessor *-- TaraProcessorConfig : configured by
+TaraProcessor o-- DatabaseService : uses
+TaraProcessor o-- FileHandler : uses
+TaraProcessor o-- AutoGenTaraAgent : uses
+
+' Return types
+TaraProcessor ..> TaraProcessorResult : returns
+TaraProcessor ..> StepResult : returns
+TaraProcessorResult *-- StepResult : contains
+TaraProcessorResult --> CompletionStatus : uses
+StepResult --> TaraStep : references
+
+' Processing relationships
+TaraProcessor ..> TaraAnalysis : processes
+TaraProcessor ..> Asset : creates
+TaraProcessor ..> ThreatScenario : creates
+TaraProcessor ..> AttackPath : creates
+TaraProcessor ..> AttackFeasibility : creates
+TaraProcessor ..> ImpactRating : creates
+TaraProcessor ..> RiskValue : creates
+TaraProcessor ..> RiskTreatment : creates
+TaraProcessor ..> CybersecurityGoal : creates
+
+' Domain model relationships
+TaraAnalysis "1" *-- "many" Asset
+TaraAnalysis "1" *-- "many" CybersecurityGoal
+Asset "1" *-- "many" ThreatScenario
+Asset "1" *-- "many" ImpactRating
+ThreatScenario "1" *-- "many" AttackPath
+ThreatScenario "1" *-- "many" RiskValue
+AttackPath "1" *-- "1" AttackFeasibility
+RiskValue "1" *-- "1" RiskTreatment
+
+' Exception
+TaraProcessor ..> TaraProcessorError : throws
+
+note top of TaraProcessor
+  **Main Orchestrator**
+  Implements ISO/SAE 21434 standard
+  Coordinates 8-step TARA workflow
+  Manages AI agents and data persistence
+end note
+
+note bottom of TaraStep
+  Sequential execution order
+  enforced by step_sequence list
+end note
+
+note right of AutoGenTaraAgent
+  Each method corresponds to
+  one TARA step and provides
+  AI-powered analysis
+end note
+
+@enduml
+
+' ============================================================================
+' SEQUENCE DIAGRAM - Processing Flow
+' ============================================================================
+
+@startuml tara_processor_sequence
+
+actor User
+participant "TaraProcessor" as PROC
+participant "DatabaseService" as DB
+participant "AutoGenTaraAgent" as AGENT
+database "Database" as DBMS
+
+User -> PROC: process_analysis(analysis_id)
+activate PROC
+
+PROC -> DB: get_session()
+activate DB
+PROC -> DB: load analysis with relationships
+DB -> DBMS: SELECT query
+DBMS --> DB: TaraAnalysis
+DB --> PROC: analysis
+deactivate DB
+
+loop for each step in [8 steps]
+    PROC -> PROC: _execute_step(analysis, step)
+    activate PROC
+    
+    alt Step 1: Asset Identification
+        PROC -> AGENT: analyze_assets(context)
+        activate AGENT
+        AGENT --> PROC: assets data
+        deactivate AGENT
+        PROC -> DB: save assets
+        activate DB
+        DB -> DBMS: INSERT assets
+        deactivate DB
+        
+    else Step 2: Threat Identification
+        PROC -> AGENT: identify_threats(context)
+        activate AGENT
+        AGENT --> PROC: threats data
+        deactivate AGENT
+        PROC -> DB: save threats
+        activate DB
+        DB -> DBMS: INSERT threats
+        deactivate DB
+        
+    else Steps 3-8: Similar pattern
+        note right: Each step follows same pattern:\n1. Call appropriate agent method\n2. Process results\n3. Persist to database
+    end
+    
+    PROC -> PROC: _update_analysis_progress()
+    PROC -> DB: update current_step
+    activate DB
+    DB -> DBMS: UPDATE analysis
+    deactivate DB
+    
+    deactivate PROC
+end
+
+PROC -> PROC: _finalize_analysis()
+PROC -> DB: mark as completed
+activate DB
+DB -> DBMS: UPDATE status
+deactivate DB
+
+PROC --> User: TaraProcessorResult
+deactivate PROC
+
+@enduml
+
+' ============================================================================
+' STATE DIAGRAM - Analysis Lifecycle
+' ============================================================================
+
+@startuml tara_processor_states
+
+[*] --> Created : process_analysis_from_file()
+
+state "Analysis Processing" as Processing {
+    Created --> Step1 : start processing
+    
+    Step1 : Asset Identification
+    Step2 : Threat Scenario Identification
+    Step3 : Attack Path Analysis
+    Step4 : Attack Feasibility Rating
+    Step5 : Impact Rating
+    Step6 : Risk Value Determination
+    Step7 : Risk Treatment Decision
+    Step8 : Cybersecurity Goals
+    
+    Step1 --> Step2 : success
+    Step2 --> Step3 : success
+    Step3 --> Step4 : success
+    Step4 --> Step5 : success
+    Step5 --> Step6 : success
+    Step6 --> Step7 : success
+    Step7 --> Step8 : success
+    Step8 --> Completed : all steps done
+    
+    Step1 --> Failed : error
+    Step2 --> Failed : error
+    Step3 --> Failed : error
+    Step4 --> Failed : error
+    Step5 --> Failed : error
+    Step6 --> Failed : error
+    Step7 --> Failed : error
+    Step8 --> Failed : error
+}
+
+Completed --> [*]
+Failed --> [*]
+
+note right of Processing
+  Each step:
+  1. Load required data
+  2. Call AI agent
+  3. Process results
+  4. Persist to database
+  5. Update progress
+end note
+
+@enduml
+
+@endsuml

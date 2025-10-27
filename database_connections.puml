@@ -1,0 +1,89 @@
+@startuml Database Service Architecture
+
+!theme plain
+
+' Define entities
+class DatabaseService {
+  - database_url: str
+  - engine: Engine
+  - session_factory: sessionmaker
+  __
+  + __init__(database_url: Optional[str])
+  + get_session(): Session
+  + create_all_tables(): void
+  + test_connection(): bool
+  + close(): void
+}
+
+package "Global Module State" {
+  object "_db_service" as global_db
+  note right of global_db
+    type: Optional[DatabaseService]
+    scope: module-level
+  end note
+}
+
+package "Public API Functions" {
+  rectangle "get_database_service()" as get_func <<function>>
+  rectangle "initialize_database()" as init_func <<function>>
+}
+
+package "Database Backends" {
+  database "SQLite\n(Development)" as sqlite
+  database "PostgreSQL\n(Production)" as postgres
+}
+
+package "SQLAlchemy Components" {
+  class Engine <<SQLAlchemy>>
+  class Session <<SQLAlchemy>>
+  class Base <<declarative_base>>
+}
+
+package "Configuration Sources" {
+  component "Environment Variables" as env
+  component "Function Parameter" as param
+}
+
+' Relationships
+init_func --> DatabaseService : creates new instance
+get_func --> DatabaseService : creates if None
+init_func --> global_db : assigns to _db_service
+get_func --> global_db : reads/writes _db_service
+
+DatabaseService --> Engine : contains
+DatabaseService --> Session : produces via\nsession_factory
+Engine --> sqlite : connects to\n(if sqlite://)
+Engine --> postgres : connects to\n(if postgresql://)
+
+param --> init_func : optional override
+env --> DatabaseService : _get_database_url()\nreads from
+param --> DatabaseService : __init__ parameter
+
+Session --> Base : queries models\nderived from
+
+' Notes
+note right of global_db
+  Singleton pattern
+  Shared across application
+  Not thread-safe
+end note
+
+note bottom of DatabaseService
+  Auto-creates tables on init
+  Context manager for sessions
+  Foreign keys enabled (SQLite)
+end note
+
+note left of get_func
+  Lazy initialization:
+  Creates _db_service
+  only if None
+end note
+
+note left of init_func
+  Explicit initialization:
+  Always creates new
+  DatabaseService instance
+end note
+
+@enduml

@@ -53,13 +53,13 @@ class Config:
             # Return mock config for demo purposes
             return GeminiConfig(
                 api_key='demo-key-not-configured',
-                model_name='gemini-1.5-pro',
+                model_name='gemini-2.5-flash',
                 base_url='https://generativelanguage.googleapis.com'
             )
         
         return GeminiConfig(
             api_key=api_key,
-            model_name='gemini-1.5-pro',
+            model_name='gemini-2.5-flash',
             base_url='https://generativelanguage.googleapis.com'
         )
     

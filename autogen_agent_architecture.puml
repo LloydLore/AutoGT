@@ -1,0 +1,571 @@
+@startuml AutoGT - AutoGen Agent Architecture
+
+' ============================================================
+' PACKAGE VIEW - High-level module organization
+' ============================================================
+
+package "AutoGT Platform" {
+    
+    package "autogt.services" <<Service Layer>> {
+        [autogen_agent]
+        [tara_processor]
+        [database]
+        [file_handler]
+        [export]
+    }
+    
+    package "autogt.models" <<Domain Models>> {
+        [base]
+        [analysis]
+        [asset]
+        [threat]
+        [attack_path]
+        [attack_feasibility]
+        [impact]
+        [risk]
+        [treatment]
+        [goal]
+    }
+    
+    package "autogt.lib" <<Core Libraries>> {
+        [config]
+        [exceptions]
+    }
+    
+    package "autogt.cli" <<CLI Interface>> {
+        [main]
+        [commands]
+    }
+}
+
+package "External Dependencies" {
+    [AutoGen\nFramework] <<Library>>
+    [Google Gemini\nAPI] <<External Service>>
+    [SQLAlchemy\nORM] <<Library>>
+}
+
+' Package relationships
+[autogen_agent] ..> [AutoGen\nFramework] : uses
+[autogen_agent] ..> [Google Gemini\nAPI] : integrates
+[autogen_agent] <-- [tara_processor] : orchestrates
+[tara_processor] --> [autogen_agent] : delegates AI tasks
+[tara_processor] --> [database] : persists results
+[tara_processor] --> [file_handler] : reads input
+[database] ..> [SQLAlchemy\nORM] : uses
+[database] --> [models] : stores
+
+[config] --> [autogen_agent] : configures
+[cli] --> [tara_processor] : invokes
+
+note right of [autogen_agent]
+  Core AI orchestrator for
+  ISO/SAE 21434 TARA workflow
+  - 8 specialized agents
+  - Gemini API integration
+  - Round-robin collaboration
+end note
+
+@enduml
+
+@startuml AutoGT - Component View
+
+' ============================================================
+' COMPONENT VIEW - Internal structure and interactions
+' ============================================================
+
+!include <C4/C4_Component>
+
+Container_Boundary(autogt_services, "AutoGT Services Layer") {
+    
+    Component(autogen_agent, "AutoGenTaraAgent", "Python Class", "AI-powered TARA analysis orchestrator")
+    Component(tara_processor, "TaraProcessor", "Python Class", "8-step workflow coordinator")
+    Component(database_service, "DatabaseService", "Python Class", "Data persistence layer")
+    Component(file_handler, "FileHandler", "Python Class", "Multi-format input parser")
+    
+    Component_Ext(config_manager, "Config", "Python Class", "Configuration management")
+}
+
+Container_Boundary(ai_agents, "AutoGen Agent System") {
+    Component(asset_analyst, "AssetAnalystAgent", "AssistantAgent", "Step 1: Asset identification")
+    Component(impact_assessor, "ImpactAssessorAgent", "AssistantAgent", "Step 2: Impact rating")
+    Component(threat_hunter, "ThreatHunterAgent", "AssistantAgent", "Step 3: Threat identification")
+    Component(attack_modeler, "AttackModelerAgent", "AssistantAgent", "Step 4: Attack path modeling")
+    Component(feasibility_analyzer, "FeasibilityAnalyzerAgent", "AssistantAgent", "Step 5: Attack feasibility")
+    Component(risk_calculator, "RiskCalculatorAgent", "AssistantAgent", "Step 6: Risk calculation")
+    Component(treatment_planner, "TreatmentPlannerAgent", "AssistantAgent", "Step 7: Risk treatment")
+    Component(goals_architect, "GoalsArchitectAgent", "AssistantAgent", "Step 8: Goals definition")
+    
+    Component(group_chat, "RoundRobinGroupChat", "AutoGen", "Multi-agent collaboration")
+}
+
+Container_Boundary(external_apis, "External APIs") {
+    Component_Ext(gemini_client, "OpenAIChatCompletionClient", "AutoGen", "Gemini API wrapper")
+    ComponentDb_Ext(gemini_api, "Google Gemini API", "REST API", "LLM inference service")
+}
+
+Container_Boundary(data_layer, "Data Persistence") {
+    ComponentDb(database, "SQLite/PostgreSQL", "Database", "TARA analysis data")
+}
+
+' Component interactions
+Rel(tara_processor, autogen_agent, "Delegates AI tasks", "Python")
+Rel(autogen_agent, asset_analyst, "Invokes", "AutoGen")
+Rel(autogen_agent, impact_assessor, "Invokes", "AutoGen")
+Rel(autogen_agent, threat_hunter, "Invokes", "AutoGen")
+Rel(autogen_agent, attack_modeler, "Invokes", "AutoGen")
+Rel(autogen_agent, feasibility_analyzer, "Invokes", "AutoGen")
+Rel(autogen_agent, risk_calculator, "Invokes", "AutoGen")
+Rel(autogen_agent, treatment_planner, "Invokes", "AutoGen")
+Rel(autogen_agent, goals_architect, "Invokes", "AutoGen")
+
+Rel(autogen_agent, group_chat, "Creates", "AutoGen")
+Rel(group_chat, asset_analyst, "Orchestrates", "AutoGen")
+Rel(group_chat, threat_hunter, "Orchestrates", "AutoGen")
+
+Rel(asset_analyst, gemini_client, "Uses", "API")
+Rel(threat_hunter, gemini_client, "Uses", "API")
+Rel(attack_modeler, gemini_client, "Uses", "API")
+Rel(gemini_client, gemini_api, "HTTP Requests", "REST/JSON")
+
+Rel(config_manager, autogen_agent, "Provides config", "Python")
+Rel(tara_processor, database_service, "Persists results", "Python")
+Rel(database_service, database, "SQL queries", "SQLAlchemy")
+
+note right of autogen_agent
+  Central orchestrator managing
+  8 specialized ISO/SAE 21434
+  TARA analysis agents
+end note
+
+note right of gemini_client
+  AutoGen's OpenAI-compatible
+  client configured for
+  Google Gemini API
+end note
+
+@enduml
+
+@startuml AutoGT - Class Diagram
+
+' ============================================================
+' CLASS VIEW - Detailed class structures and relationships
+' ============================================================
+
+package "autogt.services.autogen_agent" {
+    
+    class TaraAgentConfig <<dataclass>> {
+        + gemini_api_key: str
+        + gemini_model_name: str = "gemini-1.5-pro"
+        + gemini_base_url: str
+        + max_tokens: int = 8192
+        + temperature: float = 0.7
+        + timeout: int = 30
+        + buffer_size: int = 100
+    }
+    
+    class TaraAgentError <<Exception>> {
+        + message: str
+    }
+    
+    class AutoGenTaraAgent {
+        - config: GeminiConfig
+        - client: OpenAIChatCompletionClient
+        - agents: Dict[str, AssistantAgent]
+        
+        + __init__(config: GeminiConfig)
+        - _setup_tara_agents(): Dict[str, AssistantAgent]
+        
+        ' Step 1: Asset Analysis
+        + analyze_assets(context: Dict) → Dict
+        
+        ' Step 2: Impact Assessment  
+        + assess_impact(context: Dict) → Dict
+        
+        ' Step 3: Threat Identification
+        + identify_threats(context: Dict) → Dict
+        
+        ' Step 4: Attack Path Modeling
+        + model_attack_paths(context: Dict) → Dict
+        
+        ' Step 5: Feasibility Assessment
+        + assess_feasibility(context: Dict) → Dict
+        
+        ' Step 6: Risk Calculation
+        + calculate_risk(context: Dict) → Dict
+        
+        ' Step 7: Treatment Planning
+        + plan_treatment(context: Dict) → Dict
+        
+        ' Step 8: Goals Architecture
+        + architect_goals(context: Dict) → Dict
+        
+        ' Utility methods
+        + get_model_client() → OpenAIChatCompletionClient
+        + create_group_chat(participants: List[str]) → RoundRobinGroupChat
+    }
+}
+
+package "autogen_ext.models.openai" <<External>> {
+    class OpenAIChatCompletionClient {
+        + model: str
+        + api_key: str
+        + base_url: str
+        + send_message()
+        + get_completion()
+    }
+}
+
+package "autogen_agentchat.agents" <<External>> {
+    class AssistantAgent {
+        + name: str
+        + model_client: OpenAIChatCompletionClient
+        + system_message: str
+        + send_message()
+        + receive_message()
+    }
+}
+
+package "autogen_agentchat.teams" <<External>> {
+    class RoundRobinGroupChat {
+        + participants: List[AssistantAgent]
+        + run()
+        + send_message()
+    }
+}
+
+package "autogt.lib.config" {
+    class Config {
+        - config_file: Optional[str]
+        - _config: Dict
+        
+        + __init__(config_file: Optional[str])
+        - _load_config()
+        + get_database_url() → str
+        + get_gemini_config() → GeminiConfig
+        + get(key: str, default) → Any
+    }
+    
+    class GeminiConfig <<namedtuple>> {
+        + api_key: str
+        + model_name: str
+        + base_url: str
+    }
+    
+    class ConfigError <<Exception>> {
+        + message: str
+    }
+}
+
+package "autogt.services.tara_processor" {
+    
+    enum TaraStep {
+        ASSET_IDENTIFICATION
+        THREAT_SCENARIO_IDENTIFICATION
+        ATTACK_PATH_ANALYSIS
+        ATTACK_FEASIBILITY_RATING
+        IMPACT_RATING
+        RISK_VALUE_DETERMINATION
+        RISK_TREATMENT_DECISION
+        CYBERSECURITY_GOALS
+    }
+    
+    class TaraProcessorConfig <<dataclass>> {
+        + batch_size: int = 10
+        + max_retries: int = 3
+        + timeout_seconds: int = 300
+        + enable_parallel_processing: bool = True
+        + save_intermediate_results: bool = True
+    }
+    
+    class StepResult <<dataclass>> {
+        + step: TaraStep
+        + success: bool
+        + execution_time_seconds: float
+        + items_processed: int
+        + items_created: int
+        + error_message: Optional[str]
+        + warnings: List[str]
+        + metadata: Dict[str, Any]
+    }
+    
+    class TaraProcessorResult <<dataclass>> {
+        + analysis_id: str
+        + success: bool
+        + total_execution_time_seconds: float
+        + steps_completed: List[TaraStep]
+        + step_results: List[StepResult]
+        + final_status: CompletionStatus
+        + error_message: Optional[str]
+        + performance_metrics: Dict[str, Any]
+    }
+    
+    class TaraProcessor {
+        - db_service: DatabaseService
+        - file_handler: FileHandler
+        - autogen_agent: AutoGenTaraAgent
+        - config: TaraProcessorConfig
+        - logger: Logger
+        - step_sequence: List[TaraStep]
+        
+        + __init__(db_service, file_handler, autogen_agent, config)
+        + process_analysis(analysis_id: str) → TaraProcessorResult
+        + process_analysis_from_file(file_path, name, model) → TaraProcessorResult
+        
+        - _execute_step(analysis, step) → StepResult
+        - _load_analysis(analysis_id) → TaraAnalysis
+        - _update_analysis_progress(analysis, step)
+        - _finalize_analysis(analysis)
+        - _calculate_performance_metrics() → Dict
+    }
+    
+    class TaraProcessorError <<Exception>> {
+        + message: str
+    }
+}
+
+' Relationships
+AutoGenTaraAgent *-- "1" OpenAIChatCompletionClient : uses
+AutoGenTaraAgent *-- "8" AssistantAgent : manages
+AutoGenTaraAgent ..> RoundRobinGroupChat : creates
+AutoGenTaraAgent ..> TaraAgentConfig : configured by
+AutoGenTaraAgent ..> GeminiConfig : initialized with
+
+Config ..> GeminiConfig : provides
+Config ..> ConfigError : throws
+
+TaraProcessor *-- "1" AutoGenTaraAgent : delegates to
+TaraProcessor ..> TaraProcessorConfig : configured by
+TaraProcessor ..> TaraStep : executes
+TaraProcessor ..> StepResult : produces
+TaraProcessor ..> TaraProcessorResult : returns
+TaraProcessor ..> TaraProcessorError : throws
+
+AssistantAgent --> OpenAIChatCompletionClient : uses
+RoundRobinGroupChat o-- "*" AssistantAgent : orchestrates
+
+note right of AutoGenTaraAgent
+  **8 Specialized Agents Created:**
+  
+  1. asset_analyst - Asset identification
+  2. impact_assessor - Impact rating  
+  3. threat_hunter - Threat scenarios
+  4. attack_modeler - Attack paths
+  5. feasibility_analyzer - Feasibility rating
+  6. risk_calculator - Risk values
+  7. treatment_planner - Risk treatment
+  8. goals_architect - Cybersecurity goals
+  
+  Each agent has ISO/SAE 21434-specific
+  system messages and operates with
+  Gemini 1.5 Pro LLM via OpenAI-compatible API
+end note
+
+note bottom of TaraProcessor
+  **8-Step ISO/SAE 21434 Workflow:**
+  Sequential execution of TARA steps
+  with results persisted to database.
+  Orchestrates AI agents and manages
+  complete analysis lifecycle.
+end note
+
+note top of OpenAIChatCompletionClient
+  AutoGen's unified client
+  configured for Google Gemini API
+  via OpenAI-compatible endpoint
+end note
+
+@enduml
+
+@startuml AutoGT - Sequence Diagram (TARA Processing)
+
+' ============================================================
+' SEQUENCE VIEW - 8-Step TARA workflow execution
+' ============================================================
+
+actor User
+participant "CLI" as CLI
+participant "TaraProcessor" as TP
+participant "AutoGenTaraAgent" as AGA
+participant "AssetAnalyst\nAgent" as AA
+participant "ThreatHunter\nAgent" as TH
+participant "RiskCalculator\nAgent" as RC
+participant "Gemini API" as API
+participant "DatabaseService" as DB
+
+User -> CLI: autogt analysis create --vehicle "Model X"
+activate CLI
+
+CLI -> TP: process_analysis_from_file()
+activate TP
+
+TP -> TP: _create_analysis()
+TP -> DB: save(analysis)
+activate DB
+DB --> TP: analysis_id
+deactivate DB
+
+== Step 1: Asset Identification ==
+TP -> AGA: analyze_assets(context)
+activate AGA
+
+AGA -> AA: invoke with system_message
+activate AA
+
+AA -> API: chat.completions.create()
+activate API
+API --> AA: asset definitions
+deactivate API
+
+AA --> AGA: structured asset data
+deactivate AA
+
+AGA --> TP: assets_dict
+deactivate AGA
+
+TP -> DB: save(assets)
+activate DB
+DB --> TP: success
+deactivate DB
+
+== Step 3: Threat Identification ==
+TP -> AGA: identify_threats(context)
+activate AGA
+
+AGA -> TH: invoke with system_message
+activate TH
+
+TH -> API: chat.completions.create()
+activate API
+API --> TH: threat scenarios
+deactivate API
+
+TH --> AGA: structured threat data
+deactivate TH
+
+AGA --> TP: threats_dict
+deactivate AGA
+
+TP -> DB: save(threats)
+activate DB
+DB --> TP: success
+deactivate DB
+
+== Step 6: Risk Calculation ==
+TP -> AGA: calculate_risk(context)
+activate AGA
+
+AGA -> RC: invoke with system_message
+activate RC
+
+RC -> API: chat.completions.create()
+activate API
+API --> RC: risk assessments
+deactivate API
+
+RC --> AGA: structured risk data
+deactivate RC
+
+AGA --> TP: risks_dict
+deactivate AGA
+
+TP -> DB: save(risks)
+activate DB
+DB --> TP: success
+deactivate DB
+
+TP -> TP: _finalize_analysis()
+TP -> DB: update(analysis.status = COMPLETED)
+activate DB
+DB --> TP: success
+deactivate DB
+
+TP --> CLI: TaraProcessorResult(success=True)
+deactivate TP
+
+CLI --> User: Analysis completed: {analysis_id}
+deactivate CLI
+
+note over TP, API
+  Steps 2, 4, 5, 7, 8 follow same pattern:
+  TaraProcessor → AutoGenTaraAgent → SpecializedAgent → Gemini API
+  
+  Each step produces structured data conforming to
+  ISO/SAE 21434 requirements and persists to database.
+end note
+
+@enduml
+
+@startuml AutoGT - Agent Collaboration Pattern
+
+' ============================================================
+' COLLABORATION VIEW - Multi-agent interaction pattern
+' ============================================================
+
+participant "TaraProcessor" as TP
+participant "AutoGenTaraAgent" as AGA
+participant "RoundRobinGroupChat" as GC
+participant "AssetAnalyst" as AA
+participant "ThreatHunter" as TH  
+participant "AttackModeler" as AM
+participant "Gemini API" as API
+
+TP -> AGA: create_group_chat([agents])
+activate AGA
+
+AGA -> GC: new RoundRobinGroupChat(participants)
+activate GC
+GC --> AGA: group_chat
+deactivate GC
+
+TP -> GC: run(task_message)
+activate GC
+
+GC -> AA: send_message("Analyze vehicle assets...")
+activate AA
+
+AA -> API: chat.completions.create()
+activate API
+API --> AA: asset analysis
+deactivate API
+
+AA -> GC: respond(asset_data)
+GC -> TH: send_message(prev_context + "Identify threats...")
+deactivate AA
+activate TH
+
+TH -> API: chat.completions.create()
+activate API
+API --> TH: threat scenarios
+deactivate API
+
+TH -> GC: respond(threat_data)
+GC -> AM: send_message(prev_context + "Model attack paths...")
+deactivate TH
+activate AM
+
+AM -> API: chat.completions.create()
+activate API
+API --> AM: attack paths
+deactivate API
+
+AM -> GC: respond(attack_data)
+deactivate AM
+
+GC --> TP: collaborative_result
+deactivate GC
+
+note right of GC
+  Round-robin pattern ensures:
+  - Sequential agent execution
+  - Context passing between agents
+  - Collaborative refinement
+  - Comprehensive analysis
+end note
+
+note over AA, AM
+  Each agent brings specialized
+  ISO/SAE 21434 expertise to
+  the collaborative analysis
+end note
+
+@enduml
