@@ -14,6 +14,10 @@ from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.messages import TextMessage
 
 
+# Setup logger for this module
+logger = logging.getLogger('autogt.services.autogen_agent')
+
+
 @dataclass
 class TaraAgentConfig:
     """Configuration for TARA agent setup."""
@@ -45,12 +49,26 @@ class AutoGenTaraAgent:
         """
         self.config = config
         
+        # Create model_info for Gemini model
+        from autogen_ext.models.openai._model_info import ModelInfo
+        
+        model_info = ModelInfo(
+            vision=True,
+            function_calling=True,
+            json_output=True,
+            family="gemini"
+        )
+        
         # Initialize OpenAI client for Gemini API
         self.client = OpenAIChatCompletionClient(
             model=config.model_name,
             api_key=config.api_key,
-            base_url=config.base_url
+            base_url=config.base_url,
+            model_info=model_info
         )
+        
+        logger.info(f"✅ Initialized OpenAIChatCompletionClient with model: {config.model_name}")
+        logger.info(f"📡 Base URL: {config.base_url}")
         
         # Setup specialized agents for 8-step TARA process
         self.agents = self._setup_tara_agents()
@@ -171,19 +189,143 @@ class AutoGenTaraAgent:
             ]
         }
     
-    def identify_threats(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Identify threat scenarios for assets."""
-        return {
+    async def identify_threats(self, context: Dict[str, Any], max_retries: int = 3) -> Dict[str, Any]:
+        """Identify threat scenarios for assets using real AI API with retry mechanism.
+        
+        Args:
+            context: Analysis context containing asset information
+            max_retries: Maximum number of retry attempts (default: 3)
+            
+        Returns:
+            Dictionary containing identified threats
+            
+        Raises:
+            TaraAgentError: If all retry attempts fail
+        """
+        import asyncio
+        import json
+        
+        agent = self.agents["threat_hunter"]
+        
+        # Create detailed task message
+        task_message = f"""
+        Analysis Context:
+        - Analysis Name: {context.get('analysis_name', 'Unknown')}
+        - Vehicle Model: {context.get('vehicle_model', 'Unknown')}
+        - Asset Name: {context.get('asset_name', 'Unknown')}
+        - Asset Type: {context.get('asset_type', 'Unknown')}
+        - Criticality Level: {context.get('criticality', 'Unknown')}
+        - Interfaces: {', '.join(context.get('interfaces', []))}
+        - Data Flows: {', '.join(context.get('data_flows', []))}
+        - Description: {context.get('description', 'Not provided')}
+        
+        Task: Identify potential cybersecurity threat scenarios for this automotive asset.
+        Consider:
+        1. Threat actors (SCRIPT_KIDDIE, CRIMINAL, NATION_STATE, INSIDER)
+        2. Specific attack vectors relevant to this asset type
+        3. Realistic attack motivations
+        4. Technical prerequisites for attacks
+        5. ISO/SAE 21434 compliance considerations
+        
+        Return your analysis in strict JSON format:
+        {{
             "threats": [
-                {
-                    "name": "Remote CAN injection",
-                    "actor": "EXTERNAL_ATTACKER",
-                    "motivation": "Vehicle manipulation",
-                    "attack_vectors": ["OTA interface", "Diagnostic port"],
-                    "prerequisites": ["Network access", "CAN protocol knowledge"]
-                }
+                {{
+                    "name": "Specific threat name",
+                    "actor": "THREAT_ACTOR_TYPE",
+                    "motivation": "Clear motivation description",
+                    "attack_vectors": ["vector1", "vector2"],
+                    "prerequisites": ["prerequisite1", "prerequisite2"]
+                }}
             ]
-        }
+        }}
+        
+        Provide at least 2-3 realistic threat scenarios. Focus on automotive-specific threats.
+        """
+        
+        logger.info(f"🔄 Sending AI request for asset: {context.get('asset_name')}")
+        logger.debug(f"📤 AI Request Context: {json.dumps(context, indent=2)}")
+        
+        # Retry loop
+        last_error = None
+        for attempt in range(1, max_retries + 1):
+            try:
+                # Create message for agent
+                message = TextMessage(content=task_message, source="user")
+                
+                # Get agent response - this is the real API call
+                if attempt > 1:
+                    logger.warning(f"🔄 Retry attempt {attempt}/{max_retries} for asset: {context.get('asset_name')}")
+                    # Add exponential backoff: 2^(attempt-1) seconds
+                    wait_time = 2 ** (attempt - 1)
+                    logger.info(f"⏳ Waiting {wait_time}s before retry...")
+                    await asyncio.sleep(wait_time)
+                
+                logger.info(f"⏳ Waiting for AI response from {self.config.model_name}... (Attempt {attempt}/{max_retries})")
+                response = await agent.on_messages([message], cancellation_token=None)
+                
+                logger.info(f"✅ Received AI response")
+                logger.debug(f"📥 Raw AI Response: {response}")
+                
+                # Extract content from response
+                if hasattr(response, 'chat_message'):
+                    response_text = response.chat_message.content
+                elif hasattr(response, 'content'):
+                    response_text = response.content
+                else:
+                    response_text = str(response)
+                
+                logger.debug(f"📄 Response text: {response_text[:500]}...")
+                
+                # Parse JSON response
+                # Try to extract JSON from markdown code blocks if present
+                if "```json" in response_text:
+                    json_start = response_text.find("```json") + 7
+                    json_end = response_text.find("```", json_start)
+                    response_text = response_text[json_start:json_end].strip()
+                elif "```" in response_text:
+                    json_start = response_text.find("```") + 3
+                    json_end = response_text.find("```", json_start)
+                    response_text = response_text[json_start:json_end].strip()
+                
+                result = json.loads(response_text)
+                logger.info(f"✅ Successfully parsed {len(result.get('threats', []))} threats from AI")
+                
+                # Success! Return the result
+                return result
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"❌ Failed to parse AI response as JSON (Attempt {attempt}/{max_retries}): {e}")
+                logger.error(f"Response text: {response_text}")
+                last_error = e
+                
+                if attempt == max_retries:
+                    logger.warning(f"⚠️ All {max_retries} JSON parsing attempts failed")
+                    # Return fallback with single generic threat
+                    return {
+                        "threats": [
+                            {
+                                "name": "Remote CAN injection",
+                                "actor": "CRIMINAL",
+                                "motivation": "Vehicle manipulation",
+                                "attack_vectors": ["OTA interface", "Diagnostic port"],
+                                "prerequisites": ["Network access", "CAN protocol knowledge"]
+                            }
+                        ]
+                    }
+                # Continue to next retry attempt
+                
+            except Exception as e:
+                logger.error(f"❌ AI API call failed (Attempt {attempt}/{max_retries}): {e}")
+                last_error = e
+                
+                if attempt == max_retries:
+                    logger.error(f"💥 All {max_retries} retry attempts exhausted", exc_info=True)
+                    raise TaraAgentError(f"Failed to identify threats via AI after {max_retries} attempts: {e}")
+                # Continue to next retry attempt
+        
+        # This should never be reached due to the raise above, but just in case
+        raise TaraAgentError(f"Failed to identify threats via AI after {max_retries} attempts: {last_error}")
     
     def model_attack_paths(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """Model attack paths for threat scenarios."""

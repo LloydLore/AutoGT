@@ -48,19 +48,25 @@ class Config:
         # Create a config object with all required fields
         GeminiConfig = namedtuple('GeminiConfig', ['api_key', 'model_name', 'base_url'])
         
-        api_key = self._config['api']['gemini_key']
+        # Try multiple environment variable names
+        api_key = (
+            self._config['api']['gemini_key'] or 
+            os.getenv('GEMINI_API_KEY') or 
+            os.getenv('GOOGLE_API_KEY')
+        )
+        
         if not api_key:
             # Return mock config for demo purposes
             return GeminiConfig(
                 api_key='demo-key-not-configured',
-                model_name='gemini-2.5-flash',
-                base_url='https://generativelanguage.googleapis.com'
+                model_name='gemini-2.0-flash-exp',
+                base_url='https://generativelanguage.googleapis.com/v1beta/openai'
             )
         
         return GeminiConfig(
             api_key=api_key,
-            model_name='gemini-2.5-flash',
-            base_url='https://generativelanguage.googleapis.com'
+            model_name=os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp'),
+            base_url='https://generativelanguage.googleapis.com/v1beta/openai'
         )
     
     def get(self, key: str, default=None):

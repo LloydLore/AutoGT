@@ -133,18 +133,24 @@ def _resolve_analysis_id(session, analysis_id: str) -> UUID:
 
 
 def _ai_threat_identification(session, analysis: TaraAnalysis, assets: List[Asset], config: Config) -> int:
-    """AI-powered threat identification using AutoGen agents."""
+    """AI-powered threat identification using AutoGen agents with retry mechanism."""
+    import asyncio
+    
     try:
         # Initialize AI agent
+        logger.info("Initializing AI agent for threat identification")
         gemini_config = config.get_gemini_config()
         ai_agent = AutoGenTaraAgent(gemini_config)
         
         click.echo("   🤖 AutoGen agents initialized")
+        logger.info(f"✅ Using model: {gemini_config.model_name}")
+        logger.info(f"📡 API endpoint: {gemini_config.base_url}")
         
         threats_added = 0
         
         for asset in assets:
             click.echo(f"   🔍 Analyzing asset: {asset.name}")
+            logger.info(f"🎯 Starting threat analysis for asset: {asset.name} (Type: {asset.asset_type.value})")
             
             # Prepare context for AI analysis
             context = {
@@ -158,24 +164,52 @@ def _ai_threat_identification(session, analysis: TaraAnalysis, assets: List[Asse
                 "description": asset.security_properties.get("description", "")
             }
             
-            # Use AI agent for threat identification
-            threat_results = ai_agent.identify_threats(context)
+            logger.debug(f"📋 Analysis context: {context}")
             
-            # Process AI results
-            if "threats" in threat_results:
-                for threat_data in threat_results["threats"]:
-                    threat_scenario = _create_threat_scenario(
-                        asset, threat_data, "AI_GENERATED"
-                    )
-                    session.add(threat_scenario)
-                    threats_added += 1
-                    click.echo(f"      ✅ AI threat: {threat_data['name']}")
+            # Use AI agent for threat identification (async call with retry)
+            logger.info("🚀 Calling AI API (with up to 3 retry attempts)...")
+            click.echo(f"      ⏳ Sending request to {gemini_config.model_name}...")
             
+            try:
+                threat_results = asyncio.run(ai_agent.identify_threats(context, max_retries=3))
+                
+                logger.info(f"✅ AI API returned {len(threat_results.get('threats', []))} threats")
+                
+                # Process AI results
+                if "threats" in threat_results:
+                    for threat_data in threat_results["threats"]:
+                        logger.debug(f"💾 Saving threat: {threat_data['name']}")
+                        threat_scenario = _create_threat_scenario(
+                            asset, threat_data, "AI_GENERATED"
+                        )
+                        session.add(threat_scenario)
+                        threats_added += 1
+                        click.echo(f"      ✅ AI threat: {threat_data['name']}")
+                else:
+                    logger.warning(f"⚠️ No threats returned for asset {asset.name}")
+                    
+            except Exception as e:
+                # This exception means all retries failed
+                logger.error(f"❌ All retry attempts failed for asset {asset.name}: {e}")
+                click.echo(f"      ⚠️ AI analysis failed after 3 retries for {asset.name}")
+                click.echo(f"      🔄 Falling back to rule-based identification...")
+                
+                # Fall back to rule-based for this specific asset
+                fallback_threats = _rule_based_threat_identification_for_asset(session, analysis, asset)
+                threats_added += fallback_threats
+            
+        logger.info(f"🎉 Threat identification complete: {threats_added} threats added")
         return threats_added
         
     except Exception as e:
-        click.echo(f"   ⚠️ AI mode failed, falling back to rule-based: {str(e)[:50]}...")
+        logger.error(f"❌ AI initialization or processing failed: {e}", exc_info=True)
+        click.echo(f"   ⚠️ AI mode failed completely, falling back to rule-based approach...")
         return _rule_based_threat_identification(session, analysis, assets)
+
+
+def _rule_based_threat_identification_for_asset(session, analysis: TaraAnalysis, asset: Asset) -> int:
+    """Rule-based threat identification for a single asset (used as fallback)."""
+    return _rule_based_threat_identification(session, analysis, [asset])
 
 
 def _rule_based_threat_identification(session, analysis: TaraAnalysis, assets: List[Asset]) -> int:
